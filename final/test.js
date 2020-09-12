@@ -1,3 +1,0 @@
-let inputs = {
-    x: y:
-}
