@@ -19,8 +19,8 @@ function setup() {
     createCanvas(500, 500);
     background(200);
     let optionsData = {
-        inputs: 90,
-        outputs: 1,
+        inputs: 45,
+        outputs: 4,
         task: 'classification',
         debug: 'true'
     };
@@ -83,7 +83,7 @@ function startCollect() {
 function getData() {
     let countFrame = 0;
     Leap.loop(options, function(frame) {
-        if (frame.id % 20 == 0 && countFrame < 15) {
+        if (frame.id % 5 == 0 && countFrame < 100) {
             let fps = frame.currentFrameRate;
             countFrame++;
             frameString = concatdata("frameid", frame.id);
@@ -141,57 +141,6 @@ function getData() {
                 xMcpPinkyLeft: 0,
                 yMcpPinkyLeft: 0,
                 zMcpPinkyLeft: 0,
-
-
-                xDipThumbRight: 0,
-                yDipThumbRight: 0,
-                zDipThumbRight: 0,
-                xPipThumbRight: 0,
-                yPipThumbRight: 0,
-                zPipThumbRight: 0,
-                xMcpThumbRight: 0,
-                yMcpThumbRight: 0,
-                zMcpThumbRight: 0,
-
-                xDipIndexRight: 0,
-                yDipIndexRight: 0,
-                zDipIndexRight: 0,
-                xPipIndexRight: 0,
-                yPipIndexRight: 0,
-                zPipIndexRight: 0,
-                xMcpIndexRight: 0,
-                yMcpIndexRight: 0,
-                zMcpIndexRight: 0,
-
-                xDipMiddleRight: 0,
-                yDipMiddleRight: 0,
-                zDipMiddleRight: 0,
-                xPipMiddleRight: 0,
-                yPipMiddleRight: 0,
-                zPipMiddleRight: 0,
-                xMcpMiddleRight: 0,
-                yMcpMiddleRight: 0,
-                zMcpMiddleRight: 0,
-
-                xDipRingRight: 0,
-                yDipRingRight: 0,
-                zDipRingRight: 0,
-                xPipRingRight: 0,
-                yPipRingRight: 0,
-                zPipRingRight: 0,
-                xMcpRingRight: 0,
-                yMcpRingRight: 0,
-                zMcpRingRight: 0,
-
-                xDipPinkyRight: 0,
-                yDipPinkyRight: 0,
-                zDipPinkyRight: 0,
-                xPipPinkyRight: 0,
-                yPipPinkyRight: 0,
-                zPipPinkyRight: 0,
-                xMcpPinkyRight: 0,
-                yMcpPinkyRight: 0,
-                zMcpPinkyRight: 0
             }
             for (let i = 0, len = frame.hands.length; i < len; i++) {
                 hand = frame.hands[i];
@@ -199,7 +148,7 @@ function getData() {
                 fingerString = "";
                 handString += "<br>";
                 background(220);
-                if (hand.type == 0) {
+                if (hand.type == 'left') {
                     for (let j = 0, len2 = hand.fingers.length; j < len2; j++) {
                         finger = hand.fingers[j];
                         if (finger.type == 0) {
@@ -254,69 +203,12 @@ function getData() {
                             inputs.zMcpPinkyLeft = finger.mcpPosition[2];
                         }
                     }
-                } else {
-                    for (let j = 0, len2 = hand.fingers.length; j < len2; j++) {
-                        finger = hand.fingers[j];
-                        if (finger.type == 0) {
-                            inputs.xDipThumbRight = finger.dipPosition[0];
-                            inputs.yDipThumbRight = finger.dipPosition[1];
-                            inputs.zDipThumbRight = finger.dipPosition[2];
-                            inputs.xPipThumbRight = finger.pipPosition[0];
-                            inputs.yPipThumbRight = finger.pipPosition[1];
-                            inputs.zPipThumbRight = finger.pipPosition[2];
-                            inputs.xMcpThumbRight = finger.mcpPosition[0];
-                            inputs.yMcpThumbRight = finger.mcpPosition[1];
-                            inputs.zMcpThumbRight = finger.mcpPosition[2];
-                        } else if (finger.type == 1) {
-                            inputs.xDipIndexRight = finger.dipPosition[0];
-                            inputs.yDipIndexRight = finger.dipPosition[1];
-                            inputs.zDipIndexRight = finger.dipPosition[2];
-                            inputs.xPipIndexRight = finger.pipPosition[0];
-                            inputs.yPipIndexRight = finger.pipPosition[1];
-                            inputs.zPipIndexRight = finger.pipPosition[2];
-                            inputs.xMcpIndexRight = finger.mcpPosition[0];
-                            inputs.yMcpIndexRight = finger.mcpPosition[1];
-                            inputs.zMcpIndexRight = finger.mcpPosition[2];
-                        } else if (finger.type == 2) {
-                            inputs.xDipMiddleRight = finger.dipPosition[0];
-                            inputs.yDipMiddleRight = finger.dipPosition[1];
-                            inputs.zDipMiddleRight = finger.dipPosition[2];
-                            inputs.xPipMiddleRight = finger.pipPosition[0];
-                            inputs.yPipMiddleRight = finger.pipPosition[1];
-                            inputs.zPipMiddleRight = finger.pipPosition[2];
-                            inputs.xMcpMiddleRight = finger.mcpPosition[0];
-                            inputs.yMcpMiddleRight = finger.mcpPosition[1];
-                            inputs.zMcpMiddleRight = finger.mcpPosition[2];
-                        } else if (finger.type == 3) {
-                            inputs.xDipRingRight = finger.dipPosition[0];
-                            inputs.yDipRingRight = finger.dipPosition[1];
-                            inputs.zDipRingRight = finger.dipPosition[2];
-                            inputs.xPipRingRight = finger.pipPosition[0];
-                            inputs.yPipRingRight = finger.pipPosition[1];
-                            inputs.zPipRingRight = finger.pipPosition[2];
-                            inputs.xMcpRingRight = finger.mcpPosition[0];
-                            inputs.yMcpRingRight = finger.mcpPosition[1];
-                            inputs.zMcpRingRight = finger.mcpPosition[2];
-                        } else if (finger.type == 4) {
-                            inputs.xDipPinkyRight = finger.dipPosition[0];
-                            inputs.yDipPinkyRight = finger.dipPosition[1];
-                            inputs.zDipPinkyRight = finger.dipPosition[2];
-                            inputs.xPipPinkyRight = finger.pipPosition[0];
-                            inputs.yPipPinkyRight = finger.pipPosition[1];
-                            inputs.zPipPinkyRight = finger.pipPosition[2];
-                            inputs.xMcpPinkyRight = finger.mcpPosition[0];
-                            inputs.yMcpPinkyRight = finger.mcpPosition[1];
-                            inputs.zMcpPinkyRight = finger.mcpPosition[2];
-                        }
-                    }
                 }
-       
             }
             let target = {
                 label: targetLabel
             };
             Model.addData(inputs, target);
-
             for (let j = 0, len2 = hand.fingers.length; j < len2; j++) {
                 finger = hand.fingers[j];
                 fingerString += concatdata("fingertype", finger.type) + "(" + getFingerName(finger.type) + ") <br>";
@@ -330,6 +222,7 @@ function getData() {
             }
             frameString += fingerString
             frameString += handString;
+            console.log(inputs);
         }
         output.innerHTML = frameString;
     })

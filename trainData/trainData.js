@@ -1,7 +1,7 @@
 function setup() {
     let optionsData = {
-        inputs: 90,
-        outputs: 1,
+        inputs: 45,
+        outputs: 4,
         task: 'classification',
         debug: 'true'
     };
@@ -13,10 +13,7 @@ function keyPressed() {
     if (key == 't') {
         console.log('Start Training');
         Model.normalizeData();
-        let optionsTrain = {
-            epochs: 200
-        }
-        Model.train(optionsTrain, finishedTraining);
+        Model.train({ epochs: 100 }, finishedTraining);
     }
 }
 
