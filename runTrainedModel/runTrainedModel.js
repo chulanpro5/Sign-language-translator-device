@@ -35,7 +35,7 @@ function ModelLoaded() {
 function classifyLeap() {
     let countFrame = 0;
     Leap.loop(options, function(frame) {
-        if (frame.id % 5 == 0 && countFrame < 1) {
+        if (countFrame < 1) {
             countFrame = 1;
             let inputs = {
                 xDipThumbLeft: 0,
@@ -154,10 +154,11 @@ function classifyLeap() {
 }
 
 function gotResult(error, results) {
-    if (results[0].confidence > 0.5) {
+    if (results[0].confidence > 0.75) {
         console.log(results);
         console.log(results[0].label);
+        sentences.push(results[0].label);
         setTimeout(classifyLeap, 5000);
-    }
-    setTimeout(classifyLeap, 5000);
+        console.log(sentences);
+    } else classifyLeap();
 }
