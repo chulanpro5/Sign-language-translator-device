@@ -3,7 +3,7 @@ function setup() {
         inputs: 45,
         outputs: 4,
         task: 'classification',
-        debug: 'true'
+        debug: true
     };
     Model = ml5.neuralNetwork(optionsData);
     Model.loadData('rawData.json');
