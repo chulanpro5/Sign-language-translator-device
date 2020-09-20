@@ -13,8 +13,8 @@ let options = {
 
 function setup() {
     let options = {
-        inputs: 45,
-        outputs: 4,
+        inputs: 90,
+        outputs: 5,
         task: 'classification',
         debug: true
     }

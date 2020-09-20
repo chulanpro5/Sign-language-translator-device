@@ -19,8 +19,8 @@ function setup() {
     createCanvas(500, 500);
     background(200);
     let optionsData = {
-        inputs: 45,
-        outputs: 4,
+        inputs: 90,
+        outputs: 5,
         task: 'classification',
         debug: 'true'
     };
@@ -83,7 +83,7 @@ function startCollect() {
 function getData() {
     let countFrame = 0;
     Leap.loop(options, function(frame) {
-        if (frame.id % 5 == 0 && countFrame < 100) {
+        if (frame.id % 20 == 0 && countFrame < 40) {
             let fps = frame.currentFrameRate;
             countFrame++;
             frameString = concatdata("frameid", frame.id);
