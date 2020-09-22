@@ -13,7 +13,7 @@ let options = {
 
 function setup() {
     let options = {
-        inputs: 90,
+        inputs: 225,
         outputs: 5,
         task: 'classification',
         debug: true
@@ -34,9 +34,10 @@ function ModelLoaded() {
 
 function classifyLeap() {
     let countFrame = 0;
+    let inputsData = [];
+    let inputsTrain = [];
     Leap.loop(options, function(frame) {
-        if (countFrame < 1) {
-            countFrame = 1;
+        if (frame.id % 15 == 0 && countFrame < 1) {
             let inputs = {
                 xDipThumbLeft: 0,
                 yDipThumbLeft: 0,
@@ -90,7 +91,6 @@ function classifyLeap() {
             }
             for (let i = 0, len = frame.hands.length; i < len; i++) {
                 hand = frame.hands[i];
-                background(220);
                 if (hand.type == 'left') {
                     for (let j = 0, len2 = hand.fingers.length; j < len2; j++) {
                         finger = hand.fingers[j];
@@ -148,7 +148,63 @@ function classifyLeap() {
                     }
                 }
             }
-            Model.classify(inputs, gotResult);
+            inputsData.push(inputs);
+            if (inputsData.length == 5) {
+                for (let i = 0; i < 5; i++) {
+                    inputsTrain.push(inputsData[i].xDipThumbLeft);
+                    inputsTrain.push(inputsData[i].yDipThumbLeft);
+                    inputsTrain.push(inputsData[i].zDipThumbLeft);
+                    inputsTrain.push(inputsData[i].xPipThumbLeft);
+                    inputsTrain.push(inputsData[i].yPipThumbLeft);
+                    inputsTrain.push(inputsData[i].zPipThumbLeft);
+                    inputsTrain.push(inputsData[i].xMcpThumbLeft);
+                    inputsTrain.push(inputsData[i].yMcpThumbLeft);
+                    inputsTrain.push(inputsData[i].zMcpThumbLeft);
+
+                    inputsTrain.push(inputsData[i].xDipIndexLeft);
+                    inputsTrain.push(inputsData[i].yDipIndexLeft);
+                    inputsTrain.push(inputsData[i].zDipIndexLeft);
+                    inputsTrain.push(inputsData[i].xPipIndexLeft);
+                    inputsTrain.push(inputsData[i].yPipIndexLeft);
+                    inputsTrain.push(inputsData[i].zPipIndexLeft);
+                    inputsTrain.push(inputsData[i].xMcpIndexLeft);
+                    inputsTrain.push(inputsData[i].yMcpIndexLeft);
+                    inputsTrain.push(inputsData[i].zMcpIndexLeft);
+
+                    inputsTrain.push(inputsData[i].xDipMiddleLeft);
+                    inputsTrain.push(inputsData[i].yDipMiddleLeft);
+                    inputsTrain.push(inputsData[i].zDipMiddleLeft);
+                    inputsTrain.push(inputsData[i].xPipMiddleLeft);
+                    inputsTrain.push(inputsData[i].yPipMiddleLeft);
+                    inputsTrain.push(inputsData[i].zPipMiddleLeft);
+                    inputsTrain.push(inputsData[i].xMcpMiddleLeft);
+                    inputsTrain.push(inputsData[i].yMcpMiddleLeft);
+                    inputsTrain.push(inputsData[i].zMcpMiddleLeft);
+
+                    inputsTrain.push(inputsData[i].xDipRingLeft);
+                    inputsTrain.push(inputsData[i].yDipRingLeft);
+                    inputsTrain.push(inputsData[i].zDipRingLeft);
+                    inputsTrain.push(inputsData[i].xPipRingLeft);
+                    inputsTrain.push(inputsData[i].yPipRingLeft);
+                    inputsTrain.push(inputsData[i].zPipRingLeft);
+                    inputsTrain.push(inputsData[i].xMcpRingLeft);
+                    inputsTrain.push(inputsData[i].yMcpRingLeft);
+                    inputsTrain.push(inputsData[i].zMcpRingLeft);
+
+                    inputsTrain.push(inputsData[i].xDipPinkyLeft);
+                    inputsTrain.push(inputsData[i].yDipPinkyLeft);
+                    inputsTrain.push(inputsData[i].zDipPinkyLeft);
+                    inputsTrain.push(inputsData[i].xPipPinkyLeft);
+                    inputsTrain.push(inputsData[i].yPipPinkyLeft);
+                    inputsTrain.push(inputsData[i].zPipPinkyLeft);
+                    inputsTrain.push(inputsData[i].xMcpPinkyLeft);
+                    inputsTrain.push(inputsData[i].yMcpPinkyLeft);
+                    inputsTrain.push(inputsData[i].zMcpPinkyLeft);
+                }
+                countFrame = 1;
+                Model.classify(inputsTrain, gotResult);
+            }
+
         }
     })
 }
@@ -158,7 +214,7 @@ function gotResult(error, results) {
         console.log(results);
         console.log(results[0].label);
         sentences.push(results[0].label);
-        setTimeout(classifyLeap, 5000);
+        setTimeout(classifyLeap, 2000);
         console.log(sentences);
     } else classifyLeap();
 }

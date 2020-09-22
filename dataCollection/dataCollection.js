@@ -11,24 +11,14 @@ let options = {
     //frameEventName: 'animationFrame',
 };
 
-function concatJointPosition(id, position) {
-    return id + ": " + position[0] + ", " + position[1] + ", " + position[2] + "<br>";
-}
-
 function setup() {
-    createCanvas(500, 500);
-    background(200);
     let optionsData = {
-        inputs: 90,
+        inputs: 225,
         outputs: 5,
         task: 'classification',
         debug: 'true'
     };
     Model = ml5.neuralNetwork(optionsData);
-}
-
-function draw(position) {
-    rect(position[0] + 200, position[1] + 200, 20, 20);
 }
 
 function keyPressed() {
@@ -38,59 +28,20 @@ function keyPressed() {
         targetLabel = document.getElementById('label').value;
     }
 }
-
-function whileTraining(epoch, loss) {
-    console.log(epoch);
-}
-
-function finishedTraining() {
-    console.log('finished Training');
-}
-
-function concatdata(id, data) {
-    return id + ": " + data + "<br>";
-}
-
-function getFingerName(fingerType) {
-    switch (fingerType) {
-        case 0:
-            return "Thumb";
-            break;
-
-        case 1:
-            return "Index";
-            break;
-
-        case 2:
-            return "Middle";
-            break;
-
-        case 3:
-            return "Ring";
-            break;
-
-        case 4:
-            return "Pinky";
-            break;
-    }
-}
-let status = 1;
+let countFrame;
 
 function startCollect() {
+    countFrame = 0;
+    console.log('start collecting data');
     setTimeout(getData, 2000);
 }
 
 function getData() {
-    let countFrame = 0;
+    let inputsData = [];
+    let inputsTrain = [];
+    let check = 0;
     Leap.loop(options, function(frame) {
-        if (frame.id % 20 == 0 && countFrame < 40) {
-            let fps = frame.currentFrameRate;
-            countFrame++;
-            frameString = concatdata("frameid", frame.id);
-            console.log(fps);
-            frameString += concatdata("numhands", frame.hands.length);
-            frameString += concatdata("numfingers", frame.fingers.length);
-            frameString += "<br>";
+        if (frame.id % 15 == 0 && countFrame < 10 && check == 0) {
             let inputs = {
                 xDipThumbLeft: 0,
                 yDipThumbLeft: 0,
@@ -144,10 +95,6 @@ function getData() {
             }
             for (let i = 0, len = frame.hands.length; i < len; i++) {
                 hand = frame.hands[i];
-                handString = concatdata("handtype", hand.type);
-                fingerString = "";
-                handString += "<br>";
-                background(220);
                 if (hand.type == 'left') {
                     for (let j = 0, len2 = hand.fingers.length; j < len2; j++) {
                         finger = hand.fingers[j];
@@ -208,23 +155,67 @@ function getData() {
             let target = {
                 label: targetLabel
             };
-            Model.addData(inputs, target);
-            for (let j = 0, len2 = hand.fingers.length; j < len2; j++) {
-                finger = hand.fingers[j];
-                fingerString += concatdata("fingertype", finger.type) + "(" + getFingerName(finger.type) + ") <br>";
-                fingerString += concatJointPosition("fingerdip", finger.dipPosition);
-                fingerString += concatJointPosition("fingerpip", finger.pipPosition);
-                fingerString += concatJointPosition("fingermcp", finger.mcpPosition);
-                fingerString += "<br>";
-                draw(finger.dipPosition);
-                draw(finger.pipPosition);
-                draw(finger.mcpPosition);
+            console.log(countFrame);
+            inputsData.push(inputs);
+            if (inputsData.length == 5) {
+                console.log(inputsData);
+                countFrame++;
+                for (let i = 0; i < 5; i++) {
+                    inputsTrain.push(inputsData[i].xDipThumbLeft);
+                    inputsTrain.push(inputsData[i].yDipThumbLeft);
+                    inputsTrain.push(inputsData[i].zDipThumbLeft);
+                    inputsTrain.push(inputsData[i].xPipThumbLeft);
+                    inputsTrain.push(inputsData[i].yPipThumbLeft);
+                    inputsTrain.push(inputsData[i].zPipThumbLeft);
+                    inputsTrain.push(inputsData[i].xMcpThumbLeft);
+                    inputsTrain.push(inputsData[i].yMcpThumbLeft);
+                    inputsTrain.push(inputsData[i].zMcpThumbLeft);
+
+                    inputsTrain.push(inputsData[i].xDipIndexLeft);
+                    inputsTrain.push(inputsData[i].yDipIndexLeft);
+                    inputsTrain.push(inputsData[i].zDipIndexLeft);
+                    inputsTrain.push(inputsData[i].xPipIndexLeft);
+                    inputsTrain.push(inputsData[i].yPipIndexLeft);
+                    inputsTrain.push(inputsData[i].zPipIndexLeft);
+                    inputsTrain.push(inputsData[i].xMcpIndexLeft);
+                    inputsTrain.push(inputsData[i].yMcpIndexLeft);
+                    inputsTrain.push(inputsData[i].zMcpIndexLeft);
+
+                    inputsTrain.push(inputsData[i].xDipMiddleLeft);
+                    inputsTrain.push(inputsData[i].yDipMiddleLeft);
+                    inputsTrain.push(inputsData[i].zDipMiddleLeft);
+                    inputsTrain.push(inputsData[i].xPipMiddleLeft);
+                    inputsTrain.push(inputsData[i].yPipMiddleLeft);
+                    inputsTrain.push(inputsData[i].zPipMiddleLeft);
+                    inputsTrain.push(inputsData[i].xMcpMiddleLeft);
+                    inputsTrain.push(inputsData[i].yMcpMiddleLeft);
+                    inputsTrain.push(inputsData[i].zMcpMiddleLeft);
+
+                    inputsTrain.push(inputsData[i].xDipRingLeft);
+                    inputsTrain.push(inputsData[i].yDipRingLeft);
+                    inputsTrain.push(inputsData[i].zDipRingLeft);
+                    inputsTrain.push(inputsData[i].xPipRingLeft);
+                    inputsTrain.push(inputsData[i].yPipRingLeft);
+                    inputsTrain.push(inputsData[i].zPipRingLeft);
+                    inputsTrain.push(inputsData[i].xMcpRingLeft);
+                    inputsTrain.push(inputsData[i].yMcpRingLeft);
+                    inputsTrain.push(inputsData[i].zMcpRingLeft);
+
+                    inputsTrain.push(inputsData[i].xDipPinkyLeft);
+                    inputsTrain.push(inputsData[i].yDipPinkyLeft);
+                    inputsTrain.push(inputsData[i].zDipPinkyLeft);
+                    inputsTrain.push(inputsData[i].xPipPinkyLeft);
+                    inputsTrain.push(inputsData[i].yPipPinkyLeft);
+                    inputsTrain.push(inputsData[i].zPipPinkyLeft);
+                    inputsTrain.push(inputsData[i].xMcpPinkyLeft);
+                    inputsTrain.push(inputsData[i].yMcpPinkyLeft);
+                    inputsTrain.push(inputsData[i].zMcpPinkyLeft);
+                }
+                Model.addData(inputsTrain, target);
+                console.log('start collecting data');
+                setTimeout(getData, 2000);
+                check = 1;
             }
-            frameString += fingerString
-            frameString += handString;
-            console.log(inputs);
         }
-        output.innerHTML = frameString;
     })
-    status = 0;
 }
