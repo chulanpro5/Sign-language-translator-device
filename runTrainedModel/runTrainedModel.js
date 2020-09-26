@@ -208,9 +208,18 @@ function classifyLeap() {
         }
     })
 }
+let msg = new SpeechSynthesisUtterance();
+let voices = window.speechSynthesis.getVoices();
 
 function gotResult(error, results) {
-    if (results[0].confidence > 0.75) {
+    if (results[0].confidence > 0.8) {
+        msg.voice = voices[10];
+        msg.volume = 1;
+        msg.rate = 1;
+        msg.pitch = 2;
+        msg.text = results[0].label;
+        msg.lang = 'vi';
+        speechSynthesis.speak(msg);
         console.log(results);
         console.log(results[0].label);
         sentences.push(results[0].label);
