@@ -1,7 +1,7 @@
 function setup() {
     let optionsData = {
-        inputs: 225,
-        outputs: 5,
+        inputs: 450,
+        outputs: 10,
         task: 'classification',
         debug: true
     };
@@ -22,3 +22,4 @@ function finishedTraining() {
     Model.save();
 }
 //git test
+//test branch

@@ -5,6 +5,10 @@ let frameString = "",
 let hand, finger;
 let targetLabel = 'a';
 let sentences = [];
+let msg = new SpeechSynthesisUtterance();
+let voices = window.speechSynthesis.getVoices();
+let checkWord = "";
+let tmp = [11, -12, 13, -14, 15, -16, 17, -18, 19, -20, 21, -22, 23, -24, 25, -26, 27, -28, 29, -30, 31, -32, 33, -34, 35, -36, 37, -38, 39, -40, 41, -42, 43, -44, 45, -46, 47, -48, 49, -50, 51, -52, 53, -54, 55];
 let options = {
     enableGestures: true,
     //optimizeHMD: true,
@@ -13,8 +17,8 @@ let options = {
 
 function setup() {
     let options = {
-        inputs: 225,
-        outputs: 5,
+        inputs: 450,
+        outputs: 10,
         task: 'classification',
         debug: true
     }
@@ -31,13 +35,15 @@ function ModelLoaded() {
     console.log('Ready');
     classifyLeap();
 }
+let countFrame = 0;
 
 function classifyLeap() {
-    let countFrame = 0;
+    countFrame = 0;
     let inputsData = [];
     let inputsTrain = [];
     Leap.loop(options, function(frame) {
-        if (frame.id % 15 == 0 && countFrame < 1) {
+        if (frame.id % 20 == 0 && countFrame == 0) {
+            let check = 0;
             let inputs = {
                 xDipThumbLeft: 0,
                 yDipThumbLeft: 0,
@@ -88,8 +94,58 @@ function classifyLeap() {
                 xMcpPinkyLeft: 0,
                 yMcpPinkyLeft: 0,
                 zMcpPinkyLeft: 0,
+                xDipThumbRight: 0,
+                yDipThumbRight: 0,
+                zDipThumbRight: 0,
+                xPipThumbRight: 0,
+                yPipThumbRight: 0,
+                zPipThumbRight: 0,
+                xMcpThumbRight: 0,
+                yMcpThumbRight: 0,
+                zMcpThumbRight: 0,
+
+                xDipIndexRight: 0,
+                yDipIndexRight: 0,
+                zDipIndexRight: 0,
+                xPipIndexRight: 0,
+                yPipIndexRight: 0,
+                zPipIndexRight: 0,
+                xMcpIndexRight: 0,
+                yMcpIndexRight: 0,
+                zMcpIndexRight: 0,
+
+                xDipMiddleRight: 0,
+                yDipMiddleRight: 0,
+                zDipMiddleRight: 0,
+                xPipMiddleRight: 0,
+                yPipMiddleRight: 0,
+                zPipMiddleRight: 0,
+                xMcpMiddleRight: 0,
+                yMcpMiddleRight: 0,
+                zMcpMiddleRight: 0,
+
+                xDipRingRight: 0,
+                yDipRingRight: 0,
+                zDipRingRight: 0,
+                xPipRingRight: 0,
+                yPipRingRight: 0,
+                zPipRingRight: 0,
+                xMcpRingRight: 0,
+                yMcpRingRight: 0,
+                zMcpRingRight: 0,
+
+                xDipPinkyRight: 0,
+                yDipPinkyRight: 0,
+                zDipPinkyRight: 0,
+                xPipPinkyRight: 0,
+                yPipPinkyRight: 0,
+                zPipPinkyRight: 0,
+                xMcpPinkyRight: 0,
+                yMcpPinkyRight: 0,
+                zMcpPinkyRight: 0,
             }
             for (let i = 0, len = frame.hands.length; i < len; i++) {
+                check = 1;
                 hand = frame.hands[i];
                 if (hand.type == 'left') {
                     for (let j = 0, len2 = hand.fingers.length; j < len2; j++) {
@@ -146,84 +202,209 @@ function classifyLeap() {
                             inputs.zMcpPinkyLeft = finger.mcpPosition[2];
                         }
                     }
+                } else if (hand.type == 'right') {
+                    for (let j = 0, len2 = hand.fingers.length; j < len2; j++) {
+                        finger = hand.fingers[j];
+                        if (finger.type == 0) {
+                            inputs.xDipThumbRight = finger.dipPosition[0];
+                            inputs.yDipThumbRight = finger.dipPosition[1];
+                            inputs.zDipThumbRight = finger.dipPosition[2];
+                            inputs.xPipThumbRight = finger.pipPosition[0];
+                            inputs.yPipThumbRight = finger.pipPosition[1];
+                            inputs.zPipThumbRight = finger.pipPosition[2];
+                            inputs.xMcpThumbRight = finger.mcpPosition[0];
+                            inputs.yMcpThumbRight = finger.mcpPosition[1];
+                            inputs.zMcpThumbRight = finger.mcpPosition[2];
+                        } else if (finger.type == 1) {
+                            inputs.xDipIndexRight = finger.dipPosition[0];
+                            inputs.yDipIndexRight = finger.dipPosition[1];
+                            inputs.zDipIndexRight = finger.dipPosition[2];
+                            inputs.xPipIndexRight = finger.pipPosition[0];
+                            inputs.yPipIndexRight = finger.pipPosition[1];
+                            inputs.zPipIndexRight = finger.pipPosition[2];
+                            inputs.xMcpIndexRight = finger.mcpPosition[0];
+                            inputs.yMcpIndexRight = finger.mcpPosition[1];
+                            inputs.zMcpIndexRight = finger.mcpPosition[2];
+                        } else if (finger.type == 2) {
+                            inputs.xDipMiddleRight = finger.dipPosition[0];
+                            inputs.yDipMiddleRight = finger.dipPosition[1];
+                            inputs.zDipMiddleRight = finger.dipPosition[2];
+                            inputs.xPipMiddleRight = finger.pipPosition[0];
+                            inputs.yPipMiddleRight = finger.pipPosition[1];
+                            inputs.zPipMiddleRight = finger.pipPosition[2];
+                            inputs.xMcpMiddleRight = finger.mcpPosition[0];
+                            inputs.yMcpMiddleRight = finger.mcpPosition[1];
+                            inputs.zMcpMiddleRight = finger.mcpPosition[2];
+                        } else if (finger.type == 3) {
+                            inputs.xDipRingRight = finger.dipPosition[0];
+                            inputs.yDipRingRight = finger.dipPosition[1];
+                            inputs.zDipRingRight = finger.dipPosition[2];
+                            inputs.xPipRingRight = finger.pipPosition[0];
+                            inputs.yPipRingRight = finger.pipPosition[1];
+                            inputs.zPipRingRight = finger.pipPosition[2];
+                            inputs.xMcpRingRight = finger.mcpPosition[0];
+                            inputs.yMcpRingRight = finger.mcpPosition[1];
+                            inputs.zMcpRingRight = finger.mcpPosition[2];
+                        } else if (finger.type == 4) {
+                            inputs.xDipPinkyRight = finger.dipPosition[0];
+                            inputs.yDipPinkyRight = finger.dipPosition[1];
+                            inputs.zDipPinkyRight = finger.dipPosition[2];
+                            inputs.xPipPinkyRight = finger.pipPosition[0];
+                            inputs.yPipPinkyRight = finger.pipPosition[1];
+                            inputs.zPipPinkyRight = finger.pipPosition[2];
+                            inputs.xMcpPinkyRight = finger.mcpPosition[0];
+                            inputs.yMcpPinkyRight = finger.mcpPosition[1];
+                            inputs.zMcpPinkyRight = finger.mcpPosition[2];
+                        }
+                    }
                 }
             }
-            inputsData.push(inputs);
-            if (inputsData.length == 5) {
-                for (let i = 0; i < 5; i++) {
-                    inputsTrain.push(inputsData[i].xDipThumbLeft);
-                    inputsTrain.push(inputsData[i].yDipThumbLeft);
-                    inputsTrain.push(inputsData[i].zDipThumbLeft);
-                    inputsTrain.push(inputsData[i].xPipThumbLeft);
-                    inputsTrain.push(inputsData[i].yPipThumbLeft);
-                    inputsTrain.push(inputsData[i].zPipThumbLeft);
-                    inputsTrain.push(inputsData[i].xMcpThumbLeft);
-                    inputsTrain.push(inputsData[i].yMcpThumbLeft);
-                    inputsTrain.push(inputsData[i].zMcpThumbLeft);
+            if (check == 1) {
+                inputsData.push(inputs);
+                if (inputsData.length == 5) {
+                    for (let i = 0; i < 5; i++) {
+                        if (inputsData[i].xDipThumbLeft != 0) {
+                            inputsTrain.push(inputsData[i].xDipThumbLeft);
+                            inputsTrain.push(inputsData[i].yDipThumbLeft);
+                            inputsTrain.push(inputsData[i].zDipThumbLeft);
+                            inputsTrain.push(inputsData[i].xPipThumbLeft);
+                            inputsTrain.push(inputsData[i].yPipThumbLeft);
+                            inputsTrain.push(inputsData[i].zPipThumbLeft);
+                            inputsTrain.push(inputsData[i].xMcpThumbLeft);
+                            inputsTrain.push(inputsData[i].yMcpThumbLeft);
+                            inputsTrain.push(inputsData[i].zMcpThumbLeft);
 
-                    inputsTrain.push(inputsData[i].xDipIndexLeft);
-                    inputsTrain.push(inputsData[i].yDipIndexLeft);
-                    inputsTrain.push(inputsData[i].zDipIndexLeft);
-                    inputsTrain.push(inputsData[i].xPipIndexLeft);
-                    inputsTrain.push(inputsData[i].yPipIndexLeft);
-                    inputsTrain.push(inputsData[i].zPipIndexLeft);
-                    inputsTrain.push(inputsData[i].xMcpIndexLeft);
-                    inputsTrain.push(inputsData[i].yMcpIndexLeft);
-                    inputsTrain.push(inputsData[i].zMcpIndexLeft);
+                            inputsTrain.push(inputsData[i].xDipIndexLeft);
+                            inputsTrain.push(inputsData[i].yDipIndexLeft);
+                            inputsTrain.push(inputsData[i].zDipIndexLeft);
+                            inputsTrain.push(inputsData[i].xPipIndexLeft);
+                            inputsTrain.push(inputsData[i].yPipIndexLeft);
+                            inputsTrain.push(inputsData[i].zPipIndexLeft);
+                            inputsTrain.push(inputsData[i].xMcpIndexLeft);
+                            inputsTrain.push(inputsData[i].yMcpIndexLeft);
+                            inputsTrain.push(inputsData[i].zMcpIndexLeft);
 
-                    inputsTrain.push(inputsData[i].xDipMiddleLeft);
-                    inputsTrain.push(inputsData[i].yDipMiddleLeft);
-                    inputsTrain.push(inputsData[i].zDipMiddleLeft);
-                    inputsTrain.push(inputsData[i].xPipMiddleLeft);
-                    inputsTrain.push(inputsData[i].yPipMiddleLeft);
-                    inputsTrain.push(inputsData[i].zPipMiddleLeft);
-                    inputsTrain.push(inputsData[i].xMcpMiddleLeft);
-                    inputsTrain.push(inputsData[i].yMcpMiddleLeft);
-                    inputsTrain.push(inputsData[i].zMcpMiddleLeft);
+                            inputsTrain.push(inputsData[i].xDipMiddleLeft);
+                            inputsTrain.push(inputsData[i].yDipMiddleLeft);
+                            inputsTrain.push(inputsData[i].zDipMiddleLeft);
+                            inputsTrain.push(inputsData[i].xPipMiddleLeft);
+                            inputsTrain.push(inputsData[i].yPipMiddleLeft);
+                            inputsTrain.push(inputsData[i].zPipMiddleLeft);
+                            inputsTrain.push(inputsData[i].xMcpMiddleLeft);
+                            inputsTrain.push(inputsData[i].yMcpMiddleLeft);
+                            inputsTrain.push(inputsData[i].zMcpMiddleLeft);
 
-                    inputsTrain.push(inputsData[i].xDipRingLeft);
-                    inputsTrain.push(inputsData[i].yDipRingLeft);
-                    inputsTrain.push(inputsData[i].zDipRingLeft);
-                    inputsTrain.push(inputsData[i].xPipRingLeft);
-                    inputsTrain.push(inputsData[i].yPipRingLeft);
-                    inputsTrain.push(inputsData[i].zPipRingLeft);
-                    inputsTrain.push(inputsData[i].xMcpRingLeft);
-                    inputsTrain.push(inputsData[i].yMcpRingLeft);
-                    inputsTrain.push(inputsData[i].zMcpRingLeft);
+                            inputsTrain.push(inputsData[i].xDipRingLeft);
+                            inputsTrain.push(inputsData[i].yDipRingLeft);
+                            inputsTrain.push(inputsData[i].zDipRingLeft);
+                            inputsTrain.push(inputsData[i].xPipRingLeft);
+                            inputsTrain.push(inputsData[i].yPipRingLeft);
+                            inputsTrain.push(inputsData[i].zPipRingLeft);
+                            inputsTrain.push(inputsData[i].xMcpRingLeft);
+                            inputsTrain.push(inputsData[i].yMcpRingLeft);
+                            inputsTrain.push(inputsData[i].zMcpRingLeft);
 
-                    inputsTrain.push(inputsData[i].xDipPinkyLeft);
-                    inputsTrain.push(inputsData[i].yDipPinkyLeft);
-                    inputsTrain.push(inputsData[i].zDipPinkyLeft);
-                    inputsTrain.push(inputsData[i].xPipPinkyLeft);
-                    inputsTrain.push(inputsData[i].yPipPinkyLeft);
-                    inputsTrain.push(inputsData[i].zPipPinkyLeft);
-                    inputsTrain.push(inputsData[i].xMcpPinkyLeft);
-                    inputsTrain.push(inputsData[i].yMcpPinkyLeft);
-                    inputsTrain.push(inputsData[i].zMcpPinkyLeft);
+                            inputsTrain.push(inputsData[i].xDipPinkyLeft);
+                            inputsTrain.push(inputsData[i].yDipPinkyLeft);
+                            inputsTrain.push(inputsData[i].zDipPinkyLeft);
+                            inputsTrain.push(inputsData[i].xPipPinkyLeft);
+                            inputsTrain.push(inputsData[i].yPipPinkyLeft);
+                            inputsTrain.push(inputsData[i].zPipPinkyLeft);
+                            inputsTrain.push(inputsData[i].xMcpPinkyLeft);
+                            inputsTrain.push(inputsData[i].yMcpPinkyLeft);
+                            inputsTrain.push(inputsData[i].zMcpPinkyLeft);
+                        } else {
+                            for (let j = 0; j < 45; j++) {
+                                inputsTrain.push(inputsData[i].xDipThumbRight + tmp[j]);
+                            }
+                        }
+                        if (inputsData[i].xDipThumbRight != 0) {
+                            inputsTrain.push(inputsData[i].xDipThumbRight);
+                            inputsTrain.push(inputsData[i].yDipThumbRight);
+                            inputsTrain.push(inputsData[i].zDipThumbRight);
+                            inputsTrain.push(inputsData[i].xPipThumbRight);
+                            inputsTrain.push(inputsData[i].yPipThumbRight);
+                            inputsTrain.push(inputsData[i].zPipThumbRight);
+                            inputsTrain.push(inputsData[i].xMcpThumbRight);
+                            inputsTrain.push(inputsData[i].yMcpThumbRight);
+                            inputsTrain.push(inputsData[i].zMcpThumbRight);
+
+                            inputsTrain.push(inputsData[i].xDipIndexRight);
+                            inputsTrain.push(inputsData[i].yDipIndexRight);
+                            inputsTrain.push(inputsData[i].zDipIndexRight);
+                            inputsTrain.push(inputsData[i].xPipIndexRight);
+                            inputsTrain.push(inputsData[i].yPipIndexRight);
+                            inputsTrain.push(inputsData[i].zPipIndexRight);
+                            inputsTrain.push(inputsData[i].xMcpIndexRight);
+                            inputsTrain.push(inputsData[i].yMcpIndexRight);
+                            inputsTrain.push(inputsData[i].zMcpIndexRight);
+
+                            inputsTrain.push(inputsData[i].xDipMiddleRight);
+                            inputsTrain.push(inputsData[i].yDipMiddleRight);
+                            inputsTrain.push(inputsData[i].zDipMiddleRight);
+                            inputsTrain.push(inputsData[i].xPipMiddleRight);
+                            inputsTrain.push(inputsData[i].yPipMiddleRight);
+                            inputsTrain.push(inputsData[i].zPipMiddleRight);
+                            inputsTrain.push(inputsData[i].xMcpMiddleRight);
+                            inputsTrain.push(inputsData[i].yMcpMiddleRight);
+                            inputsTrain.push(inputsData[i].zMcpMiddleRight);
+
+                            inputsTrain.push(inputsData[i].xDipRingRight);
+                            inputsTrain.push(inputsData[i].yDipRingRight);
+                            inputsTrain.push(inputsData[i].zDipRingRight);
+                            inputsTrain.push(inputsData[i].xPipRingRight);
+                            inputsTrain.push(inputsData[i].yPipRingRight);
+                            inputsTrain.push(inputsData[i].zPipRingRight);
+                            inputsTrain.push(inputsData[i].xMcpRingRight);
+                            inputsTrain.push(inputsData[i].yMcpRingRight);
+                            inputsTrain.push(inputsData[i].zMcpRingRight);
+
+                            inputsTrain.push(inputsData[i].xDipPinkyRight);
+                            inputsTrain.push(inputsData[i].yDipPinkyRight);
+                            inputsTrain.push(inputsData[i].zDipPinkyRight);
+                            inputsTrain.push(inputsData[i].xPipPinkyRight);
+                            inputsTrain.push(inputsData[i].yPipPinkyRight);
+                            inputsTrain.push(inputsData[i].zPipPinkyRight);
+                            inputsTrain.push(inputsData[i].xMcpPinkyRight);
+                            inputsTrain.push(inputsData[i].yMcpPinkyRight);
+                            inputsTrain.push(inputsData[i].zMcpPinkyRight);
+                        } else {
+                            for (let j = 0; j < 45; j++) {
+                                inputsTrain.push(inputsData[i].xDipThumbLeft + tmp[j]);
+                            }
+                        }
+                    }
+                    countFrame = 1;
+                    console.log(inputsTrain);
+                    Model.classify(inputsTrain, gotResult);
                 }
-                countFrame = 1;
-                Model.classify(inputsTrain, gotResult);
+            } else if (sentences.length > 0) {
+                msg.voice = voices[10];
+                msg.volume = 1;
+                msg.rate = 1;
+                msg.pitch = 2;
+                msg.lang = 'vi';
+                for (let i = 0; i < sentences.length; i++) {
+                    msg.text = msg.text + sentences[i];
+                }
+                speechSynthesis.speak(msg);
+                console.log(msg.text);
+                sentences = new Array;
+                msg.text = "";
+                checkWord = "";
             }
-
         }
     })
 }
-let msg = new SpeechSynthesisUtterance();
-let voices = window.speechSynthesis.getVoices();
+
 
 function gotResult(error, results) {
-    if (results[0].confidence > 0.8) {
-        msg.voice = voices[10];
-        msg.volume = 1;
-        msg.rate = 1;
-        msg.pitch = 2;
-        msg.text = results[0].label;
-        msg.lang = 'vi';
-        speechSynthesis.speak(msg);
+    //console.log(results);
+    if (results[0].confidence > 0.95 && results[0].label != checkWord) {
         console.log(results);
+        checkWord = results[0].label;
         console.log(results[0].label);
-        sentences.push(results[0].label);
-        setTimeout(classifyLeap, 2000);
-        console.log(sentences);
+        sentences.push(results[0].label + ' ');
+        setTimeout(classifyLeap, 1500);
     } else classifyLeap();
 }

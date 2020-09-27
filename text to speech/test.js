@@ -7,3 +7,4 @@ msg.pitch = 2;
 msg.text = "";
 msg.lang = 'vi';
 speechSynthesis.speak(msg);
+git
