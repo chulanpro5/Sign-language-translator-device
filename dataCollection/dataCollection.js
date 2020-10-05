@@ -1,15 +1,6 @@
 let output = document.getElementById('output');
-let frameString = "",
-    handString = "",
-    fingerString = "";
 let hand, finger;
 let targetLabel = 'a';
-let tmp = [11, -12, 13, -14, 15, -16, 17, -18, 19, -20, 21, -22, 23, -24, 25, -26, 27, -28, 29, -30, 31, -32, 33, -34, 35, -36, 37, -38, 39, -40, 41, -42, 43, -44, 45, -46, 47, -48, 49, -50, 51, -52, 53, -54, 55];
-let options = {
-    enableGestures: true,
-    //optimizeHMD: true,
-    frameEventName: 'animationFrame',
-};
 
 function setup() {
     let optionsData = {
@@ -35,14 +26,20 @@ function startCollect() {
     console.log('start collecting data');
     setTimeout(getData, 2000);
 }
+let options = {
+    enableGestures: true,
+    optimizeHMD: true,
+    frameEventName: 'animationFrame',
+};
+let check = 0;
 
 function getData() {
+    console.log('success');
+    if (check == 1 && countFrame >= 10) return 1;
+    check = 0;
     let inputsData = [];
     let inputsTrain = [];
-    let check = 0;
     Leap.loop(options, function(frame) {
-        let fps = frame.currentFrameRate;
-        // console.log(fps);
         if (frame.id % 20 == 0 && countFrame < 10 && check == 0) {
             let inputs = {
                 xDipThumbLeft: 0,
@@ -259,7 +256,6 @@ function getData() {
                     }
                 }
             }
-
             let target = {
                 label: targetLabel
             };
@@ -319,9 +315,55 @@ function getData() {
                         inputsTrain.push(inputsData[i].yMcpPinkyLeft);
                         inputsTrain.push(inputsData[i].zMcpPinkyLeft);
                     } else {
-                        for (let j = 0; j < 45; j++) {
-                            inputsTrain.push(inputsData[i].xDipThumbRight + tmp[j]);
-                        }
+                        inputsTrain.push(inputsData[i].xDipThumbRight);
+                        inputsTrain.push(inputsData[i].yDipThumbRight);
+                        inputsTrain.push(inputsData[i].zDipThumbRight);
+                        inputsTrain.push(inputsData[i].xPipThumbRight);
+                        inputsTrain.push(inputsData[i].yPipThumbRight);
+                        inputsTrain.push(inputsData[i].zPipThumbRight);
+                        inputsTrain.push(inputsData[i].xMcpThumbRight);
+                        inputsTrain.push(inputsData[i].yMcpThumbRight);
+                        inputsTrain.push(inputsData[i].zMcpThumbRight);
+
+                        inputsTrain.push(inputsData[i].xDipIndexRight);
+                        inputsTrain.push(inputsData[i].yDipIndexRight);
+                        inputsTrain.push(inputsData[i].zDipIndexRight);
+                        inputsTrain.push(inputsData[i].xPipIndexRight);
+                        inputsTrain.push(inputsData[i].yPipIndexRight);
+                        inputsTrain.push(inputsData[i].zPipIndexRight);
+                        inputsTrain.push(inputsData[i].xMcpIndexRight);
+                        inputsTrain.push(inputsData[i].yMcpIndexRight);
+                        inputsTrain.push(inputsData[i].zMcpIndexRight);
+
+                        inputsTrain.push(inputsData[i].xDipMiddleRight);
+                        inputsTrain.push(inputsData[i].yDipMiddleRight);
+                        inputsTrain.push(inputsData[i].zDipMiddleRight);
+                        inputsTrain.push(inputsData[i].xPipMiddleRight);
+                        inputsTrain.push(inputsData[i].yPipMiddleRight);
+                        inputsTrain.push(inputsData[i].zPipMiddleRight);
+                        inputsTrain.push(inputsData[i].xMcpMiddleRight);
+                        inputsTrain.push(inputsData[i].yMcpMiddleRight);
+                        inputsTrain.push(inputsData[i].zMcpMiddleRight);
+
+                        inputsTrain.push(inputsData[i].xDipRingRight);
+                        inputsTrain.push(inputsData[i].yDipRingRight);
+                        inputsTrain.push(inputsData[i].zDipRingRight);
+                        inputsTrain.push(inputsData[i].xPipRingRight);
+                        inputsTrain.push(inputsData[i].yPipRingRight);
+                        inputsTrain.push(inputsData[i].zPipRingRight);
+                        inputsTrain.push(inputsData[i].xMcpRingRight);
+                        inputsTrain.push(inputsData[i].yMcpRingRight);
+                        inputsTrain.push(inputsData[i].zMcpRingRight);
+
+                        inputsTrain.push(inputsData[i].xDipPinkyRight);
+                        inputsTrain.push(inputsData[i].yDipPinkyRight);
+                        inputsTrain.push(inputsData[i].zDipPinkyRight);
+                        inputsTrain.push(inputsData[i].xPipPinkyRight);
+                        inputsTrain.push(inputsData[i].yPipPinkyRight);
+                        inputsTrain.push(inputsData[i].zPipPinkyRight);
+                        inputsTrain.push(inputsData[i].xMcpPinkyRight);
+                        inputsTrain.push(inputsData[i].yMcpPinkyRight);
+                        inputsTrain.push(inputsData[i].zMcpPinkyRight);
                     }
                     if (inputsData[i].xDipThumbRight != 0) {
                         inputsTrain.push(inputsData[i].xDipThumbRight);
@@ -374,9 +416,55 @@ function getData() {
                         inputsTrain.push(inputsData[i].yMcpPinkyRight);
                         inputsTrain.push(inputsData[i].zMcpPinkyRight);
                     } else {
-                        for (let j = 0; j < 45; j++) {
-                            inputsTrain.push(inputsData[i].xDipThumbLeft + tmp[j]);
-                        }
+                        inputsTrain.push(inputsData[i].xDipThumbLeft);
+                        inputsTrain.push(inputsData[i].yDipThumbLeft);
+                        inputsTrain.push(inputsData[i].zDipThumbLeft);
+                        inputsTrain.push(inputsData[i].xPipThumbLeft);
+                        inputsTrain.push(inputsData[i].yPipThumbLeft);
+                        inputsTrain.push(inputsData[i].zPipThumbLeft);
+                        inputsTrain.push(inputsData[i].xMcpThumbLeft);
+                        inputsTrain.push(inputsData[i].yMcpThumbLeft);
+                        inputsTrain.push(inputsData[i].zMcpThumbLeft);
+
+                        inputsTrain.push(inputsData[i].xDipIndexLeft);
+                        inputsTrain.push(inputsData[i].yDipIndexLeft);
+                        inputsTrain.push(inputsData[i].zDipIndexLeft);
+                        inputsTrain.push(inputsData[i].xPipIndexLeft);
+                        inputsTrain.push(inputsData[i].yPipIndexLeft);
+                        inputsTrain.push(inputsData[i].zPipIndexLeft);
+                        inputsTrain.push(inputsData[i].xMcpIndexLeft);
+                        inputsTrain.push(inputsData[i].yMcpIndexLeft);
+                        inputsTrain.push(inputsData[i].zMcpIndexLeft);
+
+                        inputsTrain.push(inputsData[i].xDipMiddleLeft);
+                        inputsTrain.push(inputsData[i].yDipMiddleLeft);
+                        inputsTrain.push(inputsData[i].zDipMiddleLeft);
+                        inputsTrain.push(inputsData[i].xPipMiddleLeft);
+                        inputsTrain.push(inputsData[i].yPipMiddleLeft);
+                        inputsTrain.push(inputsData[i].zPipMiddleLeft);
+                        inputsTrain.push(inputsData[i].xMcpMiddleLeft);
+                        inputsTrain.push(inputsData[i].yMcpMiddleLeft);
+                        inputsTrain.push(inputsData[i].zMcpMiddleLeft);
+
+                        inputsTrain.push(inputsData[i].xDipRingLeft);
+                        inputsTrain.push(inputsData[i].yDipRingLeft);
+                        inputsTrain.push(inputsData[i].zDipRingLeft);
+                        inputsTrain.push(inputsData[i].xPipRingLeft);
+                        inputsTrain.push(inputsData[i].yPipRingLeft);
+                        inputsTrain.push(inputsData[i].zPipRingLeft);
+                        inputsTrain.push(inputsData[i].xMcpRingLeft);
+                        inputsTrain.push(inputsData[i].yMcpRingLeft);
+                        inputsTrain.push(inputsData[i].zMcpRingLeft);
+
+                        inputsTrain.push(inputsData[i].xDipPinkyLeft);
+                        inputsTrain.push(inputsData[i].yDipPinkyLeft);
+                        inputsTrain.push(inputsData[i].zDipPinkyLeft);
+                        inputsTrain.push(inputsData[i].xPipPinkyLeft);
+                        inputsTrain.push(inputsData[i].yPipPinkyLeft);
+                        inputsTrain.push(inputsData[i].zPipPinkyLeft);
+                        inputsTrain.push(inputsData[i].xMcpPinkyLeft);
+                        inputsTrain.push(inputsData[i].yMcpPinkyLeft);
+                        inputsTrain.push(inputsData[i].zMcpPinkyLeft);
                     }
                 }
                 console.log(inputsTrain);

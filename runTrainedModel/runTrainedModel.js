@@ -8,11 +8,10 @@ let sentences = [];
 let msg = new SpeechSynthesisUtterance();
 let voices = window.speechSynthesis.getVoices();
 let checkWord = "";
-let tmp = [11, -12, 13, -14, 15, -16, 17, -18, 19, -20, 21, -22, 23, -24, 25, -26, 27, -28, 29, -30, 31, -32, 33, -34, 35, -36, 37, -38, 39, -40, 41, -42, 43, -44, 45, -46, 47, -48, 49, -50, 51, -52, 53, -54, 55];
 let options = {
     enableGestures: true,
-    //optimizeHMD: true,
-    //frameEventName: 'animationFrame',
+    optimizeHMD: true,
+    frameEventName: 'animationFrame',
 };
 
 function setup() {
@@ -36,6 +35,80 @@ function ModelLoaded() {
     classifyLeap();
 }
 let countFrame = 0;
+let wordPackage = ["Tôi ", "bạn ",
+    "gia đình ", "bóng chuyền ", "thể thao ",
+    "chơi ", "khỏe mạnh ", "ăn ", "uống ", "nghỉ ngơi ", "tập thể dục ", "cười ", "khóc ", "buồn ", "vui ",
+    "không ?"
+];
+let wordType = [1, 1,
+    2, 2, 2,
+    3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+    4
+];
+// 1 : chủ ngữ
+// 2 : động từ
+// 3 : bổ ngữ
+let sentencePackage = [
+    "Bạn có khỏe mạnh không ?",
+    "Tôi đang ăn cơm",
+    "Tôi rất vui",
+    "Tôi đang buồn",
+    "Tôi khá là mệt mõi"
+]
+
+let wordtype = [];
+
+function findIdWord(sentence) {
+    for (let i = 0, len = sentence.length; i < len; i++) {
+        let word = sentence[i];
+        for (let j = 0; j < wordPackage.length; j++)
+            if (word == wordPackage[j])
+                wordtype[i] = wordType[j];
+    }
+}
+
+function sortSentence(sentence) {
+    let len = sentence.length;
+    for (let i = 0; i < len; i++)
+        for (let j = 0; j < len; j++) {
+            if (wordtype[j] > wordtype[i]) {
+                let temp = wordtype[j];
+                let tmp = sentence[j];
+                wordtype[j] = wordtype[i];
+                wordtype[i] = temp;
+                sentence[j] = sentence[i];
+                sentence[i] = tmp;
+            }
+        }
+    return sentence;
+}
+
+function createSentence(sentence) {
+    let len = sentence.length;
+    let newSentence = [];
+    let ans = "";
+    for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < len; j++) {
+            let str = sentencePackage[i];
+            if (str.indexOf(sentence[j]) != -1)
+                newSentence.push(str.indexOf(sentence[j]));
+        }
+        let check = 1;
+        for (let j = 0; j < newSentence.length - 1; j++)
+            if (newSentence[j] > newSentence[j + 1])
+                check = 0;
+        if (check == 1) {
+            if (newSentence.length > ans.length)
+                ans = sentencePackage[i];
+        }
+    }
+    return ans;
+}
+findIdWord(sentenceExample);
+let ans = sortSentence(sentenceExample);
+console.log(ans);
+ans = createSentence(ans);
+console.log(ans);
 
 function classifyLeap() {
     countFrame = 0;
@@ -314,9 +387,55 @@ function classifyLeap() {
                             inputsTrain.push(inputsData[i].yMcpPinkyLeft);
                             inputsTrain.push(inputsData[i].zMcpPinkyLeft);
                         } else {
-                            for (let j = 0; j < 45; j++) {
-                                inputsTrain.push(inputsData[i].xDipThumbRight + tmp[j]);
-                            }
+                            inputsTrain.push(inputsData[i].xDipThumbRight);
+                            inputsTrain.push(inputsData[i].yDipThumbRight);
+                            inputsTrain.push(inputsData[i].zDipThumbRight);
+                            inputsTrain.push(inputsData[i].xPipThumbRight);
+                            inputsTrain.push(inputsData[i].yPipThumbRight);
+                            inputsTrain.push(inputsData[i].zPipThumbRight);
+                            inputsTrain.push(inputsData[i].xMcpThumbRight);
+                            inputsTrain.push(inputsData[i].yMcpThumbRight);
+                            inputsTrain.push(inputsData[i].zMcpThumbRight);
+
+                            inputsTrain.push(inputsData[i].xDipIndexRight);
+                            inputsTrain.push(inputsData[i].yDipIndexRight);
+                            inputsTrain.push(inputsData[i].zDipIndexRight);
+                            inputsTrain.push(inputsData[i].xPipIndexRight);
+                            inputsTrain.push(inputsData[i].yPipIndexRight);
+                            inputsTrain.push(inputsData[i].zPipIndexRight);
+                            inputsTrain.push(inputsData[i].xMcpIndexRight);
+                            inputsTrain.push(inputsData[i].yMcpIndexRight);
+                            inputsTrain.push(inputsData[i].zMcpIndexRight);
+
+                            inputsTrain.push(inputsData[i].xDipMiddleRight);
+                            inputsTrain.push(inputsData[i].yDipMiddleRight);
+                            inputsTrain.push(inputsData[i].zDipMiddleRight);
+                            inputsTrain.push(inputsData[i].xPipMiddleRight);
+                            inputsTrain.push(inputsData[i].yPipMiddleRight);
+                            inputsTrain.push(inputsData[i].zPipMiddleRight);
+                            inputsTrain.push(inputsData[i].xMcpMiddleRight);
+                            inputsTrain.push(inputsData[i].yMcpMiddleRight);
+                            inputsTrain.push(inputsData[i].zMcpMiddleRight);
+
+                            inputsTrain.push(inputsData[i].xDipRingRight);
+                            inputsTrain.push(inputsData[i].yDipRingRight);
+                            inputsTrain.push(inputsData[i].zDipRingRight);
+                            inputsTrain.push(inputsData[i].xPipRingRight);
+                            inputsTrain.push(inputsData[i].yPipRingRight);
+                            inputsTrain.push(inputsData[i].zPipRingRight);
+                            inputsTrain.push(inputsData[i].xMcpRingRight);
+                            inputsTrain.push(inputsData[i].yMcpRingRight);
+                            inputsTrain.push(inputsData[i].zMcpRingRight);
+
+                            inputsTrain.push(inputsData[i].xDipPinkyRight);
+                            inputsTrain.push(inputsData[i].yDipPinkyRight);
+                            inputsTrain.push(inputsData[i].zDipPinkyRight);
+                            inputsTrain.push(inputsData[i].xPipPinkyRight);
+                            inputsTrain.push(inputsData[i].yPipPinkyRight);
+                            inputsTrain.push(inputsData[i].zPipPinkyRight);
+                            inputsTrain.push(inputsData[i].xMcpPinkyRight);
+                            inputsTrain.push(inputsData[i].yMcpPinkyRight);
+                            inputsTrain.push(inputsData[i].zMcpPinkyRight);
                         }
                         if (inputsData[i].xDipThumbRight != 0) {
                             inputsTrain.push(inputsData[i].xDipThumbRight);
@@ -369,9 +488,55 @@ function classifyLeap() {
                             inputsTrain.push(inputsData[i].yMcpPinkyRight);
                             inputsTrain.push(inputsData[i].zMcpPinkyRight);
                         } else {
-                            for (let j = 0; j < 45; j++) {
-                                inputsTrain.push(inputsData[i].xDipThumbLeft + tmp[j]);
-                            }
+                            inputsTrain.push(inputsData[i].xDipThumbLeft);
+                            inputsTrain.push(inputsData[i].yDipThumbLeft);
+                            inputsTrain.push(inputsData[i].zDipThumbLeft);
+                            inputsTrain.push(inputsData[i].xPipThumbLeft);
+                            inputsTrain.push(inputsData[i].yPipThumbLeft);
+                            inputsTrain.push(inputsData[i].zPipThumbLeft);
+                            inputsTrain.push(inputsData[i].xMcpThumbLeft);
+                            inputsTrain.push(inputsData[i].yMcpThumbLeft);
+                            inputsTrain.push(inputsData[i].zMcpThumbLeft);
+
+                            inputsTrain.push(inputsData[i].xDipIndexLeft);
+                            inputsTrain.push(inputsData[i].yDipIndexLeft);
+                            inputsTrain.push(inputsData[i].zDipIndexLeft);
+                            inputsTrain.push(inputsData[i].xPipIndexLeft);
+                            inputsTrain.push(inputsData[i].yPipIndexLeft);
+                            inputsTrain.push(inputsData[i].zPipIndexLeft);
+                            inputsTrain.push(inputsData[i].xMcpIndexLeft);
+                            inputsTrain.push(inputsData[i].yMcpIndexLeft);
+                            inputsTrain.push(inputsData[i].zMcpIndexLeft);
+
+                            inputsTrain.push(inputsData[i].xDipMiddleLeft);
+                            inputsTrain.push(inputsData[i].yDipMiddleLeft);
+                            inputsTrain.push(inputsData[i].zDipMiddleLeft);
+                            inputsTrain.push(inputsData[i].xPipMiddleLeft);
+                            inputsTrain.push(inputsData[i].yPipMiddleLeft);
+                            inputsTrain.push(inputsData[i].zPipMiddleLeft);
+                            inputsTrain.push(inputsData[i].xMcpMiddleLeft);
+                            inputsTrain.push(inputsData[i].yMcpMiddleLeft);
+                            inputsTrain.push(inputsData[i].zMcpMiddleLeft);
+
+                            inputsTrain.push(inputsData[i].xDipRingLeft);
+                            inputsTrain.push(inputsData[i].yDipRingLeft);
+                            inputsTrain.push(inputsData[i].zDipRingLeft);
+                            inputsTrain.push(inputsData[i].xPipRingLeft);
+                            inputsTrain.push(inputsData[i].yPipRingLeft);
+                            inputsTrain.push(inputsData[i].zPipRingLeft);
+                            inputsTrain.push(inputsData[i].xMcpRingLeft);
+                            inputsTrain.push(inputsData[i].yMcpRingLeft);
+                            inputsTrain.push(inputsData[i].zMcpRingLeft);
+
+                            inputsTrain.push(inputsData[i].xDipPinkyLeft);
+                            inputsTrain.push(inputsData[i].yDipPinkyLeft);
+                            inputsTrain.push(inputsData[i].zDipPinkyLeft);
+                            inputsTrain.push(inputsData[i].xPipPinkyLeft);
+                            inputsTrain.push(inputsData[i].yPipPinkyLeft);
+                            inputsTrain.push(inputsData[i].zPipPinkyLeft);
+                            inputsTrain.push(inputsData[i].xMcpPinkyLeft);
+                            inputsTrain.push(inputsData[i].yMcpPinkyLeft);
+                            inputsTrain.push(inputsData[i].zMcpPinkyLeft);
                         }
                     }
                     countFrame = 1;
@@ -384,9 +549,10 @@ function classifyLeap() {
                 msg.rate = 1;
                 msg.pitch = 2;
                 msg.lang = 'vi';
-                for (let i = 0; i < sentences.length; i++) {
-                    msg.text = msg.text + sentences[i];
-                }
+                wordType = new Array;
+                findIdWord(sentences);
+                let speech = sortSentence(sentences);
+                msg.text = createSentence(speech);
                 speechSynthesis.speak(msg);
                 console.log(msg.text);
                 sentences = new Array;
@@ -394,13 +560,13 @@ function classifyLeap() {
                 checkWord = "";
             }
         }
+
     })
 }
 
-
 function gotResult(error, results) {
     //console.log(results);
-    if (results[0].confidence > 0.95 && results[0].label != checkWord) {
+    if (results[0].confidence > 0.7 && results[0].label != checkWord) {
         console.log(results);
         checkWord = results[0].label;
         console.log(results[0].label);
