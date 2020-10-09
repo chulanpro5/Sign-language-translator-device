@@ -1,4 +1,5 @@
-let lang = navigator.language || 'vi-VN';
+// navigator.language
+let lang = 'vi-VN';
 let speechRec = new p5.SpeechRec(lang, gotSpeech);
 
 let continuous = true;
@@ -11,7 +12,7 @@ function gotSpeech() {
     //createP(speechRec.resultString);
     let str = speechRec.resultString;
     console.log(str);
-    
+
     let inputText=[];
     let text='';
     for (i=0;i<str.length; i++) {
