@@ -13,7 +13,7 @@ function keyPressed() {
     if (key == 't') {
         console.log('Start Training');
         Model.normalizeData();
-        Model.train({ epochs: 100 }, finishedTraining);
+        Model.train({ epochs: 300 }, finishedTraining);
     }
 }
 

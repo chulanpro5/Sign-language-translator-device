@@ -32,15 +32,19 @@ let options = {
     frameEventName: 'animationFrame',
 };
 let check = 0;
+let FrameID;
+let inputsData = [];
+let inputsTrain = [];
 
 function getData() {
     console.log('success');
-    if (check == 1 && countFrame >= 10) return 1;
+    if (check == 1 && countFrame >= 15) return 1;
     check = 0;
-    let inputsData = [];
-    let inputsTrain = [];
     Leap.loop(options, function(frame) {
-        if (frame.id % 20 == 0 && countFrame < 10 && check == 0) {
+        //console.log(Leap);
+        if (frame.id % 15 == 0 && countFrame < 15 && check == 0 && frame.id != FrameID) {
+            FrameID = frame.id;
+            //    console.log(FrameID);
             let inputs = {
                 xDipThumbLeft: 0,
                 yDipThumbLeft: 0,
@@ -469,8 +473,10 @@ function getData() {
                 }
                 console.log(inputsTrain);
                 Model.addData(inputsTrain, target);
+                inputsTrain = new Array;
+                inputsData = new Array;
                 console.log('start collecting data');
-                setTimeout(getData, 1200);
+                setTimeout(getData, 1000);
                 check = 1;
             }
         }

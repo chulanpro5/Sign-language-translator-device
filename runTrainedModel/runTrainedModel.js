@@ -4,7 +4,6 @@ let frameString = "",
     fingerString = "";
 let hand, finger;
 let targetLabel = 'a';
-let sentences = [];
 let msg = new SpeechSynthesisUtterance();
 let voices = window.speechSynthesis.getVoices();
 let checkWord = "";
@@ -35,9 +34,9 @@ function ModelLoaded() {
     classifyLeap();
 }
 let countFrame = 0;
-let wordPackage = ["Tôi ", "bạn ",
-    "gia đình ", "bóng chuyền ", "thể thao ",
-    "chơi ", "khỏe mạnh ", "ăn ", "uống ", "nghỉ ngơi ", "tập thể dục ", "cười ", "khóc ", "buồn ", "vui ",
+let wordPackage = ["tôi", "bạn",
+    "gia đình", "bóng chuyền", "thể thao", "xin chào",
+    "chơi", "khỏe mạnh", "ăn", "uống", "nghỉ ngơi", "tập thể dục", "cười", "khóc", "buồn ", "vui",
     "không ?"
 ];
 let wordType = [1, 1,
@@ -49,11 +48,13 @@ let wordType = [1, 1,
 // 2 : động từ
 // 3 : bổ ngữ
 let sentencePackage = [
+    "xin chào bạn",
     "Bạn có khỏe mạnh không ?",
     "Tôi đang ăn cơm",
     "Tôi rất vui",
     "Tôi đang buồn",
-    "Tôi khá là mệt mõi"
+    "Tôi khá là mệt mõi",
+    "Rất vui được gặp bạn"
 ]
 
 let wordtype = [];
@@ -104,11 +105,7 @@ function createSentence(sentence) {
     }
     return ans;
 }
-findIdWord(sentenceExample);
-let ans = sortSentence(sentenceExample);
-console.log(ans);
-ans = createSentence(ans);
-console.log(ans);
+let sentences = new Array;
 
 function classifyLeap() {
     countFrame = 0;
@@ -552,9 +549,10 @@ function classifyLeap() {
                 wordType = new Array;
                 findIdWord(sentences);
                 let speech = sortSentence(sentences);
+                console.log(speech);
                 msg.text = createSentence(speech);
                 speechSynthesis.speak(msg);
-                console.log(msg.text);
+                console.log(msg);
                 sentences = new Array;
                 msg.text = "";
                 checkWord = "";
@@ -565,12 +563,12 @@ function classifyLeap() {
 }
 
 function gotResult(error, results) {
-    //console.log(results);
-    if (results[0].confidence > 0.7 && results[0].label != checkWord) {
+    console.log(results);
+    if (results[0].confidence > 0.4 && results[0].label != checkWord) {
         console.log(results);
         checkWord = results[0].label;
         console.log(results[0].label);
-        sentences.push(results[0].label + ' ');
+        sentences.push(results[0].label);
         setTimeout(classifyLeap, 1500);
     } else classifyLeap();
 }
