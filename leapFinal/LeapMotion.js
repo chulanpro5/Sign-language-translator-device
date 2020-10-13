@@ -4,11 +4,24 @@ var frameString = "",
     fingerString = "";
 var hand, finger;
 
+let headmound_mode = 0;
 var options = {
     enableGesture: true,
-    //optimizeHMD: true,
+    optimizeHMD: headmound_mode,
     frameEventName: 'animationFrame',
 };
+
+function keyPressed() {
+  if (key == 'v') {
+    headmound_mode = headmound_mode^1;
+    options = {
+      enableGesture: true,
+      optimizeHMD: headmound_mode,
+      frameEventName: 'animationFrame',
+    };
+    console.log('headmound_mode: '+ headmound_mode);
+  }
+}
 
 Leap.loop(options, function(frame) {
       //let fps = frame.currentFrameRate;
