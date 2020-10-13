@@ -10,8 +10,8 @@ speechRec.start(continuous, interim);
 function setup() {
   createCanvas(500, 50);
 }
-let printText;
 
+let printText;
 function draw() {
   background(220);
   fill(0);
@@ -69,8 +69,9 @@ function autoPlay(inputText)
       for(let j = 0 ; j < normalize.length ; j++)
           if(normalize[j] != '%')
               nameVideo = nameVideo + normalize[j];
-      playlist.push( nameVideo + type);
-  }
+          let videoPath = 'data/' + nameVideo + type;
+            playlist.push(videoPath);
+      }
   console.log(playlist);
   let video = Video(playlist[0], true);
   let i = 0;
