@@ -5,6 +5,10 @@ let speechRec = new p5.SpeechRec(lang, gotSpeech);
 let continuous = true;
 let interim = false;
 
+let data = [
+  "bạn", "chào", "xin"
+];
+
 speechRec.start(continuous, interim);
 
 function setup() {
@@ -59,19 +63,26 @@ function autoPlay(inputText)
   for (let i=0; i<inputText.length; i++){
     console.log(inputText[i]);
   }
+  for (let i=0; i<inputText.length; i++){
+    if (!data.includes(inputText[i]))
+      console.log(i);
+    }
 
   //let nameWord = ["xin" , "chào" , "bạn"];
   let playlist = [];
   let type = ".mp4";
   for (let i = 0; i < inputText.length; i++) {
+    if (data.includes(inputText[i]))
+    {
       let nameVideo = "";
       let normalize = encodeURIComponent(inputText[i]);
       for(let j = 0 ; j < normalize.length ; j++)
           if(normalize[j] != '%')
               nameVideo = nameVideo + normalize[j];
-          let videoPath = 'data/' + nameVideo + type;
+          let videoPath = "data/" + nameVideo + type;
             playlist.push(videoPath);
       }
+    }
   console.log(playlist);
   let video = Video(playlist[0], true);
   let i = 0;
