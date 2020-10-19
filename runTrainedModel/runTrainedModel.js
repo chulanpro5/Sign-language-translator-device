@@ -52,7 +52,9 @@ let sentencePackage = [
     "Tôi đang ăn cơm",
     "Tôi rất vui",
     "Tôi đang buồn",
-    "Tôi khá là mệt mõi"
+    "Tôi khá là mệt mỏi",
+    "Rất vui được gặp bạn",
+
 ]
 
 let wordtype = [];

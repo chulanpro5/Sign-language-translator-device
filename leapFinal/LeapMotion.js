@@ -4,14 +4,22 @@ var frameString = "",
     fingerString = "";
 var hand, finger;
 
+<<<<<<< HEAD
 let headmound_mode = false;
 var options = {
     enableGesture: true,
     optimizeHMD: true,
+=======
+let headmound_mode = 0;
+var options = {
+    enableGesture: true,
+    optimizeHMD: headmound_mode,
+>>>>>>> 4113e7c9d6fe16979fd326bc9039516f086c7e3e
     frameEventName: 'animationFrame',
 };
 
 function keyPressed() {
+<<<<<<< HEAD
     if (key == 'v') {
         if (headmound_mode == false) headmound_mode = true;
         else headmound_mode = false;
@@ -22,6 +30,17 @@ function keyPressed() {
         };
         console.log('headmound_mode: ' + headmound_mode);
     }
+=======
+  if (key == 'v') {
+    headmound_mode = headmound_mode^1;
+    options = {
+      enableGesture: true,
+      optimizeHMD: headmound_mode,
+      frameEventName: 'animationFrame',
+    };
+    console.log('headmound_mode: '+ headmound_mode);
+  }
+>>>>>>> 4113e7c9d6fe16979fd326bc9039516f086c7e3e
 }
 
 Leap.loop(options, function(frame) {
