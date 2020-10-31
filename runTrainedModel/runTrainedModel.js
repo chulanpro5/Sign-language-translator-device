@@ -312,8 +312,8 @@ function classifyLeap() {
 }
 
 function gotResult(error, results) {
-    //console.log(results);
-    if (results[0].confidence > 0.7 && results[0].label != checkWord) {
+    console.log(results);
+    if (results[0].confidence > 0.3 && results[0].label != checkWord) {
         console.log(results);
         checkWord = results[0].label;
         console.log(results[0].label);

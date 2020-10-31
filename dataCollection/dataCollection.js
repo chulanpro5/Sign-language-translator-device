@@ -29,7 +29,7 @@ function startCollect() {
 let options = {
     enableGestures: true,
     optimizeHMD: true,
-    frameEventName: 'animationFrame',
+    // frameEventName: 'animationFrame',
 };
 
 let check = 0;
@@ -68,7 +68,10 @@ function getData() {
     Leap.loop(options, function(frame) {
         let checkLeft, checkRight;
         checkLeft = checkRight = 0;
-        if (frame.id % 12 == 0 && check == 0 && frame.id != frameID) {
+        let fps = frame.currentFrameRate;
+        //console.log('fps= ', fps);
+
+        if (frame.id % 6 == 0 && check == 0 && frame.id != frameID) {
             frameID = frame.id;
 
             for (let i = 0, len = frame.hands.length; i < len; i++) {
