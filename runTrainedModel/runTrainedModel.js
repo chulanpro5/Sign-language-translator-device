@@ -136,8 +136,6 @@ let cntFrame = 0;
 function classifyLeap() {
     check = 0;
     Leap.loop(options, function(frame) {
-      //let fps = frame.currentFrameRate;
-      //console.log(fps);
         if (frame.id % 20 == 0 && check == 0 && frame.id != frameID) {
             frameID = frame.id;
             let checkLeft, checkRight;
