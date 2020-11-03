@@ -18,9 +18,6 @@ function keyPressed() {
     } else {
         targetLabel = document.getElementById('label').value;
     }
-    /*if (key == 'o') {
-        setTimeout(thunghiem, 500);
-    }*/
 }
 
 function startCollect() {
@@ -41,12 +38,9 @@ let countFrame;
 
 let joint = new Array;
 
-for (let i = 0; i <= 1; ++i) {
+for (let i = 0; i <= 1; ++i)
     joint[i] = new Array;
-    for (let j = 0; j <= 44; j++) {
-        joint[i][j] = new Array;
-    }
-}
+
 
 let jointSmoothed = new Array;
 
@@ -68,224 +62,214 @@ for (let i = 0; i <= 1; i++) {
 
 let frameID;
 
-let nhap;
+let nhap = [];
 
-//function getData() {
+let checkLeft, checkRight;
 Leap.loop(options, function(frame) {
-        let checkLeft, checkRight;
-        checkLeft = checkRight = 0;
-        let fps = frame.currentFrameRate;
-        //console.log('fps= ', fps);
+    /*let fps = frame.currentFrameRate;
+    console.log('fps= ', fps);*/
 
-        for (let i = 0, len = frame.hands.length; i < len; i++) {
-            hand = frame.hands[i];
-            if (hand.type == 'left') {
-                checkLeft = 1;
-                let palmX = hand.palmPosition[0];
-                let palmY = hand.palmPosition[1];
-                let palmZ = hand.palmPosition[2];
-                for (let j = 0, len2 = hand.fingers.length; j < len2; j++) {
-                    finger = hand.fingers[j];
-                    if (finger.type == 0) {
-                        joint[0][0][cntFrame] = finger.dipPosition[0] - palmX;
-                        joint[0][1][cntFrame] = finger.dipPosition[1] - palmY;
-                        joint[0][2][cntFrame] = finger.dipPosition[2] - palmZ;
-                        joint[0][3][cntFrame] = finger.pipPosition[0] - palmX;
-                        joint[0][4][cntFrame] = finger.pipPosition[1] - palmY;
-                        joint[0][5][cntFrame] = finger.pipPosition[2] - palmZ;
-                        joint[0][6][cntFrame] = finger.mcpPosition[0] - palmX;
-                        joint[0][7][cntFrame] = finger.mcpPosition[1] - palmY;
-                        joint[0][8][cntFrame] = finger.mcpPosition[2] - palmZ;
-                    } else if (finger.type == 1) {
-                        joint[0][9][cntFrame] = finger.dipPosition[0] - palmX;
-                        joint[0][10][cntFrame] = finger.dipPosition[1] - palmY;
-                        joint[0][11][cntFrame] = finger.dipPosition[2] - palmZ;
-                        joint[0][12][cntFrame] = finger.pipPosition[0] - palmX;
-                        joint[0][13][cntFrame] = finger.pipPosition[1] - palmY;
-                        joint[0][14][cntFrame] = finger.pipPosition[2] - palmZ;
-                        joint[0][15][cntFrame] = finger.mcpPosition[0] - palmX;
-                        joint[0][16][cntFrame] = finger.mcpPosition[1] - palmY;
-                        joint[0][17][cntFrame] = finger.mcpPosition[2] - palmZ;
-                    } else if (finger.type == 2) {
-                        joint[0][18][cntFrame] = finger.dipPosition[0] - palmX;
-                        joint[0][19][cntFrame] = finger.dipPosition[1] - palmY;
-                        joint[0][20][cntFrame] = finger.dipPosition[2] - palmZ;
-                        joint[0][21][cntFrame] = finger.pipPosition[0] - palmX;
-                        joint[0][22][cntFrame] = finger.pipPosition[1] - palmY;
-                        joint[0][23][cntFrame] = finger.pipPosition[2] - palmZ;
-                        joint[0][24][cntFrame] = finger.mcpPosition[0] - palmX;
-                        joint[0][25][cntFrame] = finger.mcpPosition[1] - palmY;
-                        joint[0][26][cntFrame] = finger.mcpPosition[2] - palmZ;
-                    } else if (finger.type == 3) {
-                        joint[0][27][cntFrame] = finger.dipPosition[0] - palmX;
-                        joint[0][28][cntFrame] = finger.dipPosition[1] - palmY;
-                        joint[0][29][cntFrame] = finger.dipPosition[2] - palmZ;
-                        joint[0][30][cntFrame] = finger.pipPosition[0] - palmX;
-                        joint[0][31][cntFrame] = finger.pipPosition[1] - palmY;
-                        joint[0][32][cntFrame] = finger.pipPosition[2] - palmZ;
-                        joint[0][33][cntFrame] = finger.mcpPosition[0] - palmX;
-                        joint[0][34][cntFrame] = finger.mcpPosition[1] - palmY;
-                        joint[0][35][cntFrame] = finger.mcpPosition[2] - palmZ;
-                    } else if (finger.type == 4) {
-                        joint[0][36][cntFrame] = finger.dipPosition[0] - palmX;
-                        joint[0][37][cntFrame] = finger.dipPosition[1] - palmY;
-                        joint[0][38][cntFrame] = finger.dipPosition[2] - palmZ;
-                        joint[0][39][cntFrame] = finger.pipPosition[0] - palmX;
-                        joint[0][40][cntFrame] = finger.pipPosition[1] - palmY;
-                        joint[0][41][cntFrame] = finger.pipPosition[2] - palmZ;
-                        joint[0][42][cntFrame] = finger.mcpPosition[0] - palmX;
-                        joint[0][43][cntFrame] = finger.mcpPosition[1] - palmY;
-                        joint[0][44][cntFrame] = finger.mcpPosition[2] - palmZ;
-                    }
+    checkLeft = checkRight = 0;
+
+    for (let i = 0, len = frame.hands.length; i < len; i++) {
+        hand = frame.hands[i];
+        if (hand.type == 'left') {
+            checkLeft = 1;
+            let palmX = hand.palmPosition[0];
+            let palmY = hand.palmPosition[1];
+            let palmZ = hand.palmPosition[2];
+            for (let j = 0, len2 = hand.fingers.length; j < len2; j++) {
+                finger = hand.fingers[j];
+                if (finger.type == 0) {
+                    joint[0][0] = finger.dipPosition[0] - palmX;
+                    joint[0][1] = finger.dipPosition[1] - palmY;
+                    joint[0][2] = finger.dipPosition[2] - palmZ;
+                    joint[0][3] = finger.pipPosition[0] - palmX;
+                    joint[0][4] = finger.pipPosition[1] - palmY;
+                    joint[0][5] = finger.pipPosition[2] - palmZ;
+                    joint[0][6] = finger.mcpPosition[0] - palmX;
+                    joint[0][7] = finger.mcpPosition[1] - palmY;
+                    joint[0][8] = finger.mcpPosition[2] - palmZ;
+                } else if (finger.type == 1) {
+                    joint[0][9] = finger.dipPosition[0] - palmX;
+                    joint[0][10] = finger.dipPosition[1] - palmY;
+                    joint[0][11] = finger.dipPosition[2] - palmZ;
+                    joint[0][12] = finger.pipPosition[0] - palmX;
+                    joint[0][13] = finger.pipPosition[1] - palmY;
+                    joint[0][14] = finger.pipPosition[2] - palmZ;
+                    joint[0][15] = finger.mcpPosition[0] - palmX;
+                    joint[0][16] = finger.mcpPosition[1] - palmY;
+                    joint[0][17] = finger.mcpPosition[2] - palmZ;
+                } else if (finger.type == 2) {
+                    joint[0][18] = finger.dipPosition[0] - palmX;
+                    joint[0][19] = finger.dipPosition[1] - palmY;
+                    joint[0][20] = finger.dipPosition[2] - palmZ;
+                    joint[0][21] = finger.pipPosition[0] - palmX;
+                    joint[0][22] = finger.pipPosition[1] - palmY;
+                    joint[0][23] = finger.pipPosition[2] - palmZ;
+                    joint[0][24] = finger.mcpPosition[0] - palmX;
+                    joint[0][25] = finger.mcpPosition[1] - palmY;
+                    joint[0][26] = finger.mcpPosition[2] - palmZ;
+                } else if (finger.type == 3) {
+                    joint[0][27] = finger.dipPosition[0] - palmX;
+                    joint[0][28] = finger.dipPosition[1] - palmY;
+                    joint[0][29] = finger.dipPosition[2] - palmZ;
+                    joint[0][30] = finger.pipPosition[0] - palmX;
+                    joint[0][31] = finger.pipPosition[1] - palmY;
+                    joint[0][32] = finger.pipPosition[2] - palmZ;
+                    joint[0][33] = finger.mcpPosition[0] - palmX;
+                    joint[0][34] = finger.mcpPosition[1] - palmY;
+                    joint[0][35] = finger.mcpPosition[2] - palmZ;
+                } else if (finger.type == 4) {
+                    joint[0][36] = finger.dipPosition[0] - palmX;
+                    joint[0][37] = finger.dipPosition[1] - palmY;
+                    joint[0][38] = finger.dipPosition[2] - palmZ;
+                    joint[0][39] = finger.pipPosition[0] - palmX;
+                    joint[0][40] = finger.pipPosition[1] - palmY;
+                    joint[0][41] = finger.pipPosition[2] - palmZ;
+                    joint[0][42] = finger.mcpPosition[0] - palmX;
+                    joint[0][43] = finger.mcpPosition[1] - palmY;
+                    joint[0][44] = finger.mcpPosition[2] - palmZ;
                 }
-            } else if (hand.type == 'right') {
-                let palmX = hand.palmPosition[0];
-                let palmY = hand.palmPosition[1];
-                let palmZ = hand.palmPosition[2];
-                checkRight = 1;
-                for (let j = 0, len2 = hand.fingers.length; j < len2; j++) {
-                    finger = hand.fingers[j];
-                    if (finger.type == 0) {
-                        joint[1][0][cntFrame] = finger.dipPosition[0] - palmX;
-                        joint[1][1][cntFrame] = finger.dipPosition[1] - palmY;
-                        joint[1][2][cntFrame] = finger.dipPosition[2] - palmZ;
-                        joint[1][3][cntFrame] = finger.pipPosition[0] - palmX;
-                        joint[1][4][cntFrame] = finger.pipPosition[1] - palmY;
-                        joint[1][5][cntFrame] = finger.pipPosition[2] - palmZ;
-                        joint[1][6][cntFrame] = finger.mcpPosition[0] - palmX;
-                        joint[1][7][cntFrame] = finger.mcpPosition[1] - palmY;
-                        joint[1][8][cntFrame] = finger.mcpPosition[2] - palmZ;
-                    } else if (finger.type == 1) {
-                        joint[1][9][cntFrame] = finger.dipPosition[0] - palmX;
-                        joint[1][10][cntFrame] = finger.dipPosition[1] - palmY;
-                        joint[1][11][cntFrame] = finger.dipPosition[2] - palmZ;
-                        joint[1][12][cntFrame] = finger.pipPosition[0] - palmX;
-                        joint[1][13][cntFrame] = finger.pipPosition[1] - palmY;
-                        joint[1][14][cntFrame] = finger.pipPosition[2] - palmZ;
-                        joint[1][15][cntFrame] = finger.mcpPosition[0] - palmX;
-                        joint[1][16][cntFrame] = finger.mcpPosition[1] - palmY;
-                        joint[1][17][cntFrame] = finger.mcpPosition[2] - palmZ;
-                    } else if (finger.type == 2) {
-                        joint[1][18][cntFrame] = finger.dipPosition[0] - palmX;
-                        joint[1][19][cntFrame] = finger.dipPosition[1] - palmY;
-                        joint[1][20][cntFrame] = finger.dipPosition[2] - palmZ;
-                        joint[1][21][cntFrame] = finger.pipPosition[0] - palmX;
-                        joint[1][22][cntFrame] = finger.pipPosition[1] - palmY;
-                        joint[1][23][cntFrame] = finger.pipPosition[2] - palmZ;
-                        joint[1][24][cntFrame] = finger.mcpPosition[0] - palmX;
-                        joint[1][25][cntFrame] = finger.mcpPosition[1] - palmY;
-                        joint[1][26][cntFrame] = finger.mcpPosition[2] - palmZ;
-                    } else if (finger.type == 3) {
-                        joint[1][27][cntFrame] = finger.dipPosition[0] - palmX;
-                        joint[1][28][cntFrame] = finger.dipPosition[1] - palmY;
-                        joint[1][29][cntFrame] = finger.dipPosition[2] - palmZ;
-                        joint[1][30][cntFrame] = finger.pipPosition[0] - palmX;
-                        joint[1][31][cntFrame] = finger.pipPosition[1] - palmY;
-                        joint[1][32][cntFrame] = finger.pipPosition[2] - palmZ;
-                        joint[1][33][cntFrame] = finger.mcpPosition[0] - palmX;
-                        joint[1][34][cntFrame] = finger.mcpPosition[1] - palmY;
-                        joint[1][35][cntFrame] = finger.mcpPosition[2] - palmZ;
-                    } else if (finger.type == 4) {
-                        joint[1][36][cntFrame] = finger.dipPosition[0] - palmX;
-                        joint[1][37][cntFrame] = finger.dipPosition[1] - palmY;
-                        joint[1][38][cntFrame] = finger.dipPosition[2] - palmZ;
-                        joint[1][39][cntFrame] = finger.pipPosition[0] - palmX;
-                        joint[1][40][cntFrame] = finger.pipPosition[1] - palmY;
-                        joint[1][41][cntFrame] = finger.pipPosition[2] - palmZ;
-                        joint[1][42][cntFrame] = finger.mcpPosition[0] - palmX;
-                        joint[1][43][cntFrame] = finger.mcpPosition[1] - palmY;
-                        joint[1][44][cntFrame] = finger.mcpPosition[2] - palmZ;
-                    }
+            }
+        } else if (hand.type == 'right') {
+            let palmX = hand.palmPosition[0];
+            let palmY = hand.palmPosition[1];
+            let palmZ = hand.palmPosition[2];
+            checkRight = 1;
+            for (let j = 0, len2 = hand.fingers.length; j < len2; j++) {
+                finger = hand.fingers[j];
+                if (finger.type == 0) {
+                    joint[1][0] = finger.dipPosition[0] - palmX;
+                    joint[1][1] = finger.dipPosition[1] - palmY;
+                    joint[1][2] = finger.dipPosition[2] - palmZ;
+                    joint[1][3] = finger.pipPosition[0] - palmX;
+                    joint[1][4] = finger.pipPosition[1] - palmY;
+                    joint[1][5] = finger.pipPosition[2] - palmZ;
+                    joint[1][6] = finger.mcpPosition[0] - palmX;
+                    joint[1][7] = finger.mcpPosition[1] - palmY;
+                    joint[1][8] = finger.mcpPosition[2] - palmZ;
+                } else if (finger.type == 1) {
+                    joint[1][9] = finger.dipPosition[0] - palmX;
+                    joint[1][10] = finger.dipPosition[1] - palmY;
+                    joint[1][11] = finger.dipPosition[2] - palmZ;
+                    joint[1][12] = finger.pipPosition[0] - palmX;
+                    joint[1][13] = finger.pipPosition[1] - palmY;
+                    joint[1][14] = finger.pipPosition[2] - palmZ;
+                    joint[1][15] = finger.mcpPosition[0] - palmX;
+                    joint[1][16] = finger.mcpPosition[1] - palmY;
+                    joint[1][17] = finger.mcpPosition[2] - palmZ;
+                } else if (finger.type == 2) {
+                    joint[1][18] = finger.dipPosition[0] - palmX;
+                    joint[1][19] = finger.dipPosition[1] - palmY;
+                    joint[1][20] = finger.dipPosition[2] - palmZ;
+                    joint[1][21] = finger.pipPosition[0] - palmX;
+                    joint[1][22] = finger.pipPosition[1] - palmY;
+                    joint[1][23] = finger.pipPosition[2] - palmZ;
+                    joint[1][24] = finger.mcpPosition[0] - palmX;
+                    joint[1][25] = finger.mcpPosition[1] - palmY;
+                    joint[1][26] = finger.mcpPosition[2] - palmZ;
+                } else if (finger.type == 3) {
+                    joint[1][27] = finger.dipPosition[0] - palmX;
+                    joint[1][28] = finger.dipPosition[1] - palmY;
+                    joint[1][29] = finger.dipPosition[2] - palmZ;
+                    joint[1][30] = finger.pipPosition[0] - palmX;
+                    joint[1][31] = finger.pipPosition[1] - palmY;
+                    joint[1][32] = finger.pipPosition[2] - palmZ;
+                    joint[1][33] = finger.mcpPosition[0] - palmX;
+                    joint[1][34] = finger.mcpPosition[1] - palmY;
+                    joint[1][35] = finger.mcpPosition[2] - palmZ;
+                } else if (finger.type == 4) {
+                    joint[1][36] = finger.dipPosition[0] - palmX;
+                    joint[1][37] = finger.dipPosition[1] - palmY;
+                    joint[1][38] = finger.dipPosition[2] - palmZ;
+                    joint[1][39] = finger.pipPosition[0] - palmX;
+                    joint[1][40] = finger.pipPosition[1] - palmY;
+                    joint[1][41] = finger.pipPosition[2] - palmZ;
+                    joint[1][42] = finger.mcpPosition[0] - palmX;
+                    joint[1][43] = finger.mcpPosition[1] - palmY;
+                    joint[1][44] = finger.mcpPosition[2] - palmZ;
                 }
             }
         }
+    }
+    nhap = joint;
+})
 
-        cntFrame++;
-
-        if (cntFrame == 5) {
-            /*let target = {
-                label: targetLabel
-            };*/
-
-            let inputsTrain = new Array;
-
-            if (checkLeft == 0)
-                joint[0] = joint[1];
-            if (checkRight == 0)
-                joint[1] = joint[0];
-
-            console.log('joint');
-            console.log(joint);
-
-            for (let i = 0; i <= 1; i++)
-                for (let j = 0; j <= 44; j++)
-                    for (let k = 0; k <= 4; k++)
-                        jointSmoothed[i][j][k] = 1;
-
-            for (let i = 0; i <= 1; i++) {
-                for (let j = 0; j <= 44; j++)
-                    for (let k = 0; k <= 4; k++) {
-                        jointSmoothed[i][j][k] = (-3 * joint[i][j][Math.max(0, k - 2)] + joint[i][j][Math.max(0, k - 1)] * 12 + 17 * joint[i][j][k] + 12 * joint[i][j][Math.min(k + 1, 4)] - 3 * joint[i][j][Math.min(k + 2, 4)]) / 13;
-                        jointSmoothed[i][j][k] = Math.ceil(jointSmoothed[i][j][k]);
-                        inputsTrain.push(jointSmoothed[i][j][k]);
-                    }
-            }
-
-            for (let i = 0; i <= 1; i++)
-                for (let j = 0; j <= 44; j++)
-                    for (let k = 0; k <= 4; k++)
-                        movement[i][j][k] = 1;
-
-            for (let i = 0; i <= 1; i++) {
-                for (let j = 0; j <= 44; j++)
-                    for (let k = 1; k <= 4; k++) {
-                        movement[i][j][k] = jointSmoothed[i][j][k] - jointSmoothed[i][j][k - 1];
-                        movement[i][j][k] = Math.ceil(movement[i][j][k]);
-                        inputsTrain.push(movement[i][j][k]);
-                    }
-            }
-
-            /*console.log('jointSmoothed');
-            console.log(jointSmoothed);
-            console.log('movement');
-            console.log(movement);
-            console.log('inputsTrain');
-            console.log(inputsTrain);
-            Model.addData(inputsTrain, target);*/
-            nhap = inputsTrain;
-
-        }
-    })
-    //}
 let dem = 0;
+
+let jointTrain = new Array;
+
+for (let i = 0; i <= 1; i++) {
+    jointTrain[i] = new Array;
+    for (let j = 0; j <= 44; j++) {
+        jointTrain[i][j] = new Array;
+    }
+}
 
 function getData() {
     let target = {
         label: targetLabel
     };
-    /*console.log('jointSmoothed');
-    console.log(jointSmoothed);
-    console.log('movement');
-    console.log(movement);
-    console.log('inputsTrain');*/
+
     if (dem == 0) console.log("START");
+
     console.log(nhap);
-    Model.addData(nhap, target);
+
+    for (let i = 0; i <= 1; i++)
+        for (let j = 0; j <= 44; j++)
+            jointTrain[i][j][dem] = nhap[i][j];
+
     dem++;
-    if (dem == 4) {
+
+    if (dem == 5) {
         dem = 0;
-        console.log("FINISHED ");
-        return;
-    }
-    setTimeout(getData, 200);
+
+        let inputsTrain = new Array;
+
+        if (checkLeft == 0)
+            jointTrain[0] = jointTrain[1];
+        if (checkRight == 0)
+            jointTrain[1] = jointTrain[0];
+
+        console.log('nhap');
+        console.log(nhap);
+
+        for (let i = 0; i <= 1; i++)
+            for (let j = 0; j <= 44; j++)
+                for (let k = 0; k <= 4; k++)
+                    jointSmoothed[i][j][k] = 1;
+
+        for (let i = 0; i <= 1; i++) {
+            for (let j = 0; j <= 44; j++)
+                for (let k = 0; k <= 4; k++) {
+                    jointSmoothed[i][j][k] = (-3 * jointTrain[i][j][Math.max(0, k - 2)] + jointTrain[i][j][Math.max(0, k - 1)] * 12 + 17 * jointTrain[i][j][k] + 12 * jointTrain[i][j][Math.min(k + 1, 4)] - 3 * jointTrain[i][j][Math.min(k + 2, 4)]) / 13;
+                    jointSmoothed[i][j][k] = Math.round(jointSmoothed[i][j][k] * 100) / 100;
+                    inputsTrain.push(jointSmoothed[i][j][k]);
+                }
+        }
+
+        for (let i = 0; i <= 1; i++)
+            for (let j = 0; j <= 44; j++)
+                for (let k = 0; k <= 4; k++)
+                    movement[i][j][k] = 1;
+
+        for (let i = 0; i <= 1; i++) {
+            for (let j = 0; j <= 44; j++)
+                for (let k = 1; k <= 4; k++) {
+                    movement[i][j][k] = jointSmoothed[i][j][k] - jointSmoothed[i][j][k - 1];
+                    movement[i][j][k] = Math.round(movement[i][j][k] * 100) / 100;
+                    inputsTrain.push(movement[i][j][k]);
+                }
+        }
+
+        console.log('jointSmoothed');
+        console.log(jointSmoothed);
+        console.log('movement');
+        console.log(movement);
+        console.log('inputsTrain');
+        console.log(inputsTrain);
+        Model.addData(inputsTrain, target);
+
+    } else if (dem < 5) setTimeout(getData, 200);
 }
-
-/*let thu = 0;
-
-thunghiem;
-
-function thunghiem() {
-    console.log(thu);
-    thu++;
-    setTimeout(thunghiem, 1000);
-}*/
