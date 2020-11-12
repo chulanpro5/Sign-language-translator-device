@@ -1,5 +1,5 @@
 // navigator.language
-let lang = 'en-US';
+let lang = 'vi-VN';
 let speechRec = new p5.SpeechRec(lang, gotSpeech);
 
 let continuous = true;

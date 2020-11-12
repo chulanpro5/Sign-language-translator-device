@@ -23,9 +23,6 @@ function draw() {
   textSize(30);
   //textAlign(CENTER, CENTER);
   text(printText, 30, 33);
-  //function write(printText){
-  //  text('printText', 30, 20);
-  //}
 }
 
 function gotSpeech() {
