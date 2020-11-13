@@ -4,8 +4,8 @@ let targetLabel = 'a';
 
 function setup() {
     let optionsData = {
-        inputs: 180,
-        outputs: 15,
+        inputs: 810,
+        outputs: 10,
         task: 'classification',
         debug: 'true'
     };
@@ -23,7 +23,7 @@ function keyPressed() {
 function startCollect() {
     countFrame = 0;
     console.log('start collecting data');
-    setTimeout(getData, 1000);
+    setTimeout(getData, 500);
 }
 
 let options = {
@@ -194,7 +194,6 @@ Leap.loop(options, function(frame) {
         }
     }
     nhap = joint;
-    // console.log(nhap);
 })
 
 let dem = 0;
@@ -223,52 +222,54 @@ function getData() {
 
     dem++;
 
-    if (dem == 2) {
+    if (dem == 5) {
         dem = 0;
 
         let inputsTrain = new Array;
 
+        if (checkLeft == 0)
+            jointTrain[0] = jointTrain[1];
+        if (checkRight == 0)
+            jointTrain[1] = jointTrain[0];
+
         console.log('nhap');
         console.log(nhap);
-        console.log("checkLeft :");
-        console.log(checkLeft);
-        console.log("checkRight :");
-        console.log(checkRight);
+
         for (let i = 0; i <= 1; i++)
             for (let j = 0; j <= 44; j++)
-                for (let k = 0; k <= 1; k++)
+                for (let k = 0; k <= 4; k++)
                     jointSmoothed[i][j][k] = 1;
-
-        if (checkLeft == 0) {
-            for (let j = 0; j <= 44; j++)
-                for (let k = 0; k <= 1; k++)
-                    jointTrain[0][j][k] = jointTrain[1][j][k] * 11 / 12;
-        }
-
-        if (checkRight == 0) {
-            for (let j = 0; j <= 44; j++)
-                for (let k = 0; k <= 1; k++)
-                    jointTrain[1][j][k] = jointTrain[0][j][k] * 11 / 12;
-        }
 
         for (let i = 0; i <= 1; i++) {
             for (let j = 0; j <= 44; j++)
-                for (let k = 0; k <= 1; k++) {
-                    jointSmoothed[i][j][k] = (-3 * jointTrain[i][j][Math.max(0, k - 1)] + jointTrain[i][j][Math.max(0, k - 1)] * 12 + 17 * jointTrain[i][j][k] + 12 * jointTrain[i][j][Math.min(k + 1, 1)] - 3 * jointTrain[i][j][Math.min(k + 2, 1)]) / 13;
-                    jointSmoothed[i][j][k] = Math.round(jointSmoothed[i][j][k] * 1000) / 1000;
+                for (let k = 0; k <= 4; k++) {
+                    jointSmoothed[i][j][k] = (-3 * jointTrain[i][j][Math.max(0, k - 2)] + jointTrain[i][j][Math.max(0, k - 1)] * 12 + 17 * jointTrain[i][j][k] + 12 * jointTrain[i][j][Math.min(k + 1, 4)] - 3 * jointTrain[i][j][Math.min(k + 2, 4)]) / 13;
+                    jointSmoothed[i][j][k] = Math.round(jointSmoothed[i][j][k] * 100) / 100;
                     inputsTrain.push(jointSmoothed[i][j][k]);
+                }
+        }
+
+        for (let i = 0; i <= 1; i++)
+            for (let j = 0; j <= 44; j++)
+                for (let k = 0; k <= 4; k++)
+                    movement[i][j][k] = 1;
+
+        for (let i = 0; i <= 1; i++) {
+            for (let j = 0; j <= 44; j++)
+                for (let k = 1; k <= 4; k++) {
+                    movement[i][j][k] = jointSmoothed[i][j][k] - jointSmoothed[i][j][k - 1];
+                    movement[i][j][k] = Math.round(movement[i][j][k] * 100) / 100;
+                    inputsTrain.push(movement[i][j][k]);
                 }
         }
 
         console.log('jointSmoothed');
         console.log(jointSmoothed);
+        console.log('movement');
+        console.log(movement);
         console.log('inputsTrain');
         console.log(inputsTrain);
         Model.addData(inputsTrain, target);
 
-        for (let i = 0; i <= 1; i++)
-            for (let j = 0; j <= 44; j++)
-                nhap[i][j] = 0;
-
-    } else if (dem < 2) setTimeout(getData, 600);
+    } else if (dem < 5) setTimeout(getData, 200);
 }
