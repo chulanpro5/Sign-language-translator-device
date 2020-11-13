@@ -15,6 +15,8 @@ let options = {
 let sentences = [];
 
 function setup() {
+    video = createCapture(VIDEO);
+    video.hide();
     let options = {
         inputs: 180,
         outputs: 15,
@@ -148,6 +150,7 @@ let res = "";
 
 function draw() {
     background(220);
+    image(video, 0, 0);
     fill(0);
     noStroke();
     textSize(30);
@@ -155,6 +158,8 @@ function draw() {
         textAlign(CENTER, CENTER);
         text(res, 450, 450);
     }
+    /*textAlign(CENTER, CENTER);
+    text('text_here', 450, 450);*/
 }
 
 Leap.loop(options, function(frame) {
