@@ -30,7 +30,7 @@ function setup() {
         weights: 'model.weights.bin',
     };
 
-    createCanvas(900, 900);
+    createCanvas(642, 610);
     Model.load(modelInfo, ModelLoaded);
 }
 
@@ -156,7 +156,7 @@ function draw() {
     textSize(30);
     if (res.length > 0) {
         textAlign(CENTER, CENTER);
-        text(res, 450, 450);
+        text(res, 300, 550);
     }
     /*textAlign(CENTER, CENTER);
     text('text_here', 450, 450);*/
