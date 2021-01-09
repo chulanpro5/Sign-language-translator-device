@@ -338,6 +338,8 @@ function classifyLeap() {
             console.log(res);
             msg.text = res
             speechSynthesis.speak(msg);
+            //responsiveVoice.setDefaultVoice("Vietnamese male");
+            //responsiveVoice.speak(res);
             Saying.push(res);
             type.push(1);
             sentences = new Array;
