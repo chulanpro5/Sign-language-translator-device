@@ -35,6 +35,18 @@ let wordType = [1, 1, 1, 1,
 // 2 : động từ
 // 3 : bổ ngữ
 
+let sentencePackageSize = [
+    3,
+    5,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+]
+
 let sentencePackage = [
     "tôi tên là Hiếu",
     "tôi là tác giả của thiết bị hỗ trợ giao tiếp",
@@ -95,27 +107,31 @@ function sortSentence(sentence) {
     return sentence;
 }
 
-let t2 = 0;
+
 
 function createSentence(sentence) {
     let len = sentence.length;
     let ans = "";
+    let t2 = 0;
     for (let i = 0; i < 9; i++) {
-        let newSentence = [];
+        const newSentence = new Set();
         let str = sentencePackage[i];
         for (let j = 0; j < len; j++) {
             let tmp = sentence[j];
             if (str.indexOf(tmp) != -1)
-                newSentence.push(tmp);
+                newSentence.add(tmp);
         }
-        let t1 = newSentence.length;
+        let t1 = newSentence.size;
 
         if (t1 > t2) {
-            t2 = newSentence.length;
-            ans = sentencePackage[i];
+
+            if (t1 == sentencePackageSize[i]) {
+                t2 = newSentence.length;
+                ans = str;
+                break;
+            }
         }
     }
-    t2 = 0;
     return ans;
 }
 
