@@ -6,6 +6,7 @@ let frameString = "",
 let hand, finger;
 let targetLabel = 'a';
 let msg = new SpeechSynthesisUtterance();
+msg.lang = 'vi-VN'
 let checkWord = "";
 let options = {
     enableGestures: true,
@@ -16,7 +17,7 @@ let options = {
 let sentences = [];
 let Saying = [];
 let type = [];
-let sizeWord = 17;
+let sizeWord =28;
 let wordtype = [];
 
 let wordPackage = ["tôi", "bạn", "tác giả", "thiết bị",
@@ -37,7 +38,7 @@ let wordType = [1, 1, 1, 1,
 
 let sentencePackageSize = [
     3,
-    5,
+    4,
     2,
     2,
     2,
@@ -73,7 +74,7 @@ function setup() {
         weights: 'model.weights.bin',
     };
 
-    createCanvas(1000, 700);
+    createCanvas(1300, 700);
     Model.load(modelInfo, ModelLoaded);
 }
 
@@ -169,18 +170,18 @@ let nhap = new Array;
 let dem = 0;
 let res = "";
 let countFrame = 0;
-
+checkWord = 'waiting....';
 function draw() {
     background(0);
-    textSize(50);
+    textSize(sizeWord);
 
-    fill(100);
-    textAlign(CENTER);
-    text(checkWord, 500, 350);
+    fill(255);
+    textAlign(RIGHT);
+    text(checkWord, 600, 160);
 
     let lastY = 50;
 
-    if (Saying.length > 5) {
+    if (Saying.length > 3) {
         Saying.shift();
         type.shift();
     }
