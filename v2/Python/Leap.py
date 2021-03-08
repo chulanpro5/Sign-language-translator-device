@@ -15,13 +15,14 @@ print("Hello World")
 f = open('dataRaw.json',)  
 finalData = json.load(f,)
 print(len(finalData))
-numData = 0
+numData = -1
 numCurFrame = 0
 
 Left = []
 Right = []
-label = 2
+label = 0
 newData = []
+#flag = 0
 
 def on_message(ws, message):
     global lastTime
@@ -31,6 +32,7 @@ def on_message(ws, message):
     global Right
     global finalData
     global newData
+    
     data = json.loads(message)
 
     curTime = int(round(time.time() * 10 )) 
@@ -38,17 +40,17 @@ def on_message(ws, message):
     data['label'] = label
 
 
-    if curTime - lastTime >= 4 : 
-        print(curTime)
-        print(lastTime)
+    if curTime - lastTime >= 1 : 
+        #print(curTime)
+        #print(lastTime)
 
         lastTime = curTime
         numCurFrame += 1
 
-        print("[",numCurFrame , "]")
+        #print("[",numCurFrame , "]")
 
         newData.append(data)
-        
+
         if numCurFrame == 5:
             numCurFrame = 0
             numData += 1
@@ -58,13 +60,16 @@ def on_message(ws, message):
 
             lastTime += 2
 
+            
+
             print("Start collecting...")
 
             finalData.append(newData)
             newData = []
 
-    if numData == 100:
+    if numData == 200:
         print(len(finalData))
+        finalData.pop(0)
         with open('dataRaw.json', 'w') as outfile:
                 json.dump(finalData, outfile)
         sys.exit()
