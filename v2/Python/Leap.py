@@ -21,6 +21,7 @@ numCurFrame = 0
 Left = []
 Right = []
 label = 2
+newData = []
 
 def on_message(ws, message):
     global lastTime
@@ -43,6 +44,8 @@ def on_message(ws, message):
         numCurFrame += 1
 
         print("[",numCurFrame , "]")
+
+        newData.append(data)
         
         if numCurFrame == 5:
             numCurFrame = 0
@@ -55,7 +58,7 @@ def on_message(ws, message):
 
             print("Start collecting...")
 
-            finalData.append(data)
+            finalData.append(newData)
 
     if numData == 100:
         print(len(finalData))
