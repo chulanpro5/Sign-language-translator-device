@@ -30,12 +30,14 @@ def on_message(ws, message):
     global Left
     global Right
     global finalData
-
+    global newData
     data = json.loads(message)
 
     curTime = int(round(time.time() * 10 )) 
 
     data['label'] = label
+
+
     if curTime - lastTime >= 4 : 
         print(curTime)
         print(lastTime)
@@ -59,6 +61,7 @@ def on_message(ws, message):
             print("Start collecting...")
 
             finalData.append(newData)
+            newData = []
 
     if numData == 100:
         print(len(finalData))

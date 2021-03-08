@@ -12,7 +12,6 @@ from keras.callbacks import ModelCheckpoint
 
 f = open('rawData.json',)  
 data = json.load(f) 
-data = data["data"]
 c = []
 xraw = []
 x = []
@@ -20,7 +19,7 @@ y = []
 
 for i in data:
     xraw.append(i["ys"])
-    y.append(int(i["xs"]))
+    y.append(int(i["label"]))
 
 for i in xraw:
   tmp = []
@@ -31,7 +30,7 @@ for i in xraw:
 
 x = np.asarray(x)
 y = np.asarray(y)
-x = x.reshape(x.shape[0],x.shape[1]//90,90)
+x = x.reshape(x.shape[0] , x.shape[1]//96 , 96)
 
 model = Sequential()
 model.add(LSTM(
@@ -39,6 +38,7 @@ model.add(LSTM(
   input_shape=(x.shape[1], x.shape[2]),
   return_sequences=True
 ))
+
 model.add(Dropout(0.3))
 model.add(LSTM(512))
 model.add(Dense(128, activation='relu'))
