@@ -12,20 +12,16 @@ joint = ['dipPosition' , 'pipPosition' , 'mcpPosition']
 Left = []
 Right = []
 
-rawData = {}
-rawData['label'] = -1
-rawData['ys'] = []
-
 finalData = []
 
-for data in nData:    
-    rawData['label'] = data[0]['label']
+for data in nData:  
+    rawData = {}  
     rawData['ys'] = []
 
-    Left = []
-    Right = []
-
     for curData in data:
+        Left = []
+        Right = []
+        rawData['label'] = curData['label']
         if len(curData['hands']) == 1:
             if curData['hands'][0]['type'] == 'left':
                 for posJoint in curData['hands'][0]['palmPosition']:
@@ -68,16 +64,19 @@ for data in nData:
                     for posJoint in curData['pointables'][finger][curJoint] :
                         Right.append(posJoint)
     
-    for tmp in Left:
-        rawData['ys'].append(tmp)
-    
-    for tmp in Right:
-        rawData['ys'].append(tmp)
+        for tmp in Left:
+            rawData['ys'].append(tmp)
+        
+        for tmp in Right:
+            rawData['ys'].append(tmp)
 
-    
-    finalData.append(rawData)
+    print(rawData['label'])
+
+    finalData.append(rawData)        
 
 print(len(finalData))
+
+print(finalData[0]['label'])
 
 with open('rawData.json', 'w') as outfile:
     json.dump(finalData, outfile)
