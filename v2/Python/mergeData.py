@@ -9,7 +9,9 @@ for curLabel in label:
     f = open(newLabel,)
     Data = json.load(f)
     for curData in Data:
-        finalData.append(curData)
+        exists = 'currentFrameRate' in curData[0]
+        if exists == True:
+            finalData.append(curData)
         
 with open('dataRaw.json', 'w') as outfile:
     json.dump(finalData, outfile)

@@ -23,14 +23,16 @@ for data in nData:
         Right = []
         rawData['label'] = curData['label']
         if len(curData['hands']) == 1:
+            palm = curData['hands'][0]['palmPosition']
+
             if curData['hands'][0]['type'] == 'left':
                 for posJoint in curData['hands'][0]['palmPosition']:
                     Left.append(posJoint)
 
                 for finger in range(0 , 5 , 1):
                     for curJoint in joint:
-                        for posJoint in curData['pointables'][finger][curJoint]:
-                            Left.append(posJoint)
+                        for id in range(len(curData['pointables'][finger][curJoint])):
+                            Left.append(curData['pointables'][finger][curJoint][id] - palm[id])
                 
                 for i in range(0 , 48 , 1): 
                     Right.append(0)
@@ -41,13 +43,15 @@ for data in nData:
 
                 for finger in range(0 , 5 , 1):
                     for curJoint in joint:
-                        for posJoint in curData['pointables'][finger][curJoint]:
-                            Right.append(posJoint)
+                        for id in range(len(curData['pointables'][finger][curJoint])):
+                            Right.append(curData['pointables'][finger][curJoint][id] - palm[id])
                 
                 for finger in range(0 , 48 , 1):
                     Left.append(0)
 
         elif len(curData['hands']) == 2:
+            palm = curData['hands'][0]['palmPosition']
+
             for posJoint in curData['hands'][0]['palmPosition']:
                 Left.append(posJoint)
 
@@ -55,14 +59,16 @@ for data in nData:
                 Right.append(posJoint)
             
             for finger in range(0 , 5 , 1):
-                for curJoint in joint:
-                    for posJoint in curData['pointables'][finger][curJoint] :
-                        Left.append(posJoint)
+                    for curJoint in joint:
+                        for id in range(len(curData['pointables'][finger][curJoint])):
+                            Left.append(curData['pointables'][finger][curJoint][id] - palm[id])
             
+            palm = curData['hands'][1]['palmPosition']
+
             for finger in range(5 , 10 , 1):
-                for curJoint in joint:
-                    for posJoint in curData['pointables'][finger][curJoint] :
-                        Right.append(posJoint)
+                    for curJoint in joint:
+                        for id in range(len(curData['pointables'][finger][curJoint])):
+                            Right.append(curData['pointables'][finger][curJoint][id] - palm[id])
     
         for tmp in Left:
             rawData['ys'].append(tmp)
@@ -70,24 +76,11 @@ for data in nData:
         for tmp in Right:
             rawData['ys'].append(tmp)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     if len(rawData['ys']) == 480:
-        finalData.append(rawData)        
-=======
-    print(rawData['label'])
-
-    finalData.append(rawData)        
->>>>>>> parent of d1242b0 (as)
-=======
-    print(rawData['label'])
-
-    finalData.append(rawData)        
->>>>>>> ea08a4288dd206cac81080c880aa06f41dc2d159
+        finalData.append(rawData)             
 
 print(len(finalData))
-
-print(finalData[0]['label'])
 
 with open('rawData.json', 'w') as outfile:
     json.dump(finalData, outfile)

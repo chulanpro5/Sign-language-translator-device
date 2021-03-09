@@ -23,29 +23,17 @@ for i in data:
 
 for i in xraw:
   tmp = []
-<<<<<<< HEAD
   for id in i:
     tmp.append(id)
-  x.append(tmp)
   if len(tmp) != 480:
     print('Wrong Data :')
     print(len(tmp))
     print('-----------')
-
-x = np.asarray(x)
-
-print(x.shape)
-=======
-  print(len(i))
-  for id in i:
-    tmp.append(id)
   x.append(tmp)
 
 x = np.asarray(x)
 
 print(x.shape[0])
->>>>>>> ea08a4288dd206cac81080c880aa06f41dc2d159
-
 y = np.asarray(y)
 x = x.reshape(x.shape[0],x.shape[1]//96,96)
 
