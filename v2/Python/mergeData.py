@@ -2,25 +2,14 @@ import json
 
 finalData = []
 
-f = open('Toi.json',)  
-nData = json.load(f) 
+label = ['Toi' , 'Ten' , 'XinChao' , 'Toi2' , 'Ten2' , 'XinChao2']
 
-for curData in nData:
-    finalData.append(curData)
-
-f = open('Ten.json',)  
-nData = json.load(f) 
-
-for curData in nData:
-    finalData.append(curData)
-
-
-f = open('XinChao.json',)  
-nData = json.load(f) 
-
-for curData in nData:
-    finalData.append(curData)
-
-
+for curLabel in label:
+    newLabel = curLabel + '.json'
+    f = open(newLabel,)
+    Data = json.load(f)
+    for curData in Data:
+        finalData.append(curData)
+        
 with open('dataRaw.json', 'w') as outfile:
     json.dump(finalData, outfile)
