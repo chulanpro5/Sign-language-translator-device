@@ -70,9 +70,20 @@ for data in nData:
         for tmp in Right:
             rawData['ys'].append(tmp)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+    if len(rawData['ys']) == 480:
+        finalData.append(rawData)        
+=======
     print(rawData['label'])
 
     finalData.append(rawData)        
+>>>>>>> parent of d1242b0 (as)
+=======
+    print(rawData['label'])
+
+    finalData.append(rawData)        
+>>>>>>> ea08a4288dd206cac81080c880aa06f41dc2d159
 
 print(len(finalData))
 
