@@ -29,8 +29,11 @@ for i in xraw:
   x.append(tmp)
 
 x = np.asarray(x)
+
+print(x.shape[0])
+
 y = np.asarray(y)
-x = x.reshape(x.shape[0] , x.shape[1]//96 , 96)
+x = x.reshape(x.shape[0],x.shape[1]//96,96)
 
 model = Sequential()
 model.add(LSTM(
