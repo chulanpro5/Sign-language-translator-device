@@ -1,2 +1,0 @@
-
-x = np.asarray(x)
