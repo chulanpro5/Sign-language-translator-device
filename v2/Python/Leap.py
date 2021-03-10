@@ -40,14 +40,14 @@ def on_message(ws, message):
     data['label'] = label
 
 
-    if curTime - lastTime >= 1 : 
+    if curTime - lastTime >= 3 : 
         #print(curTime)
         #print(lastTime)
 
         lastTime = curTime
         numCurFrame += 1
 
-        #print("[",numCurFrame , "]")
+        print("[",numCurFrame , "]")
 
         newData.append(data)
 
