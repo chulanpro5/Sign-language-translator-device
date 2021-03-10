@@ -40,7 +40,11 @@ def on_message(ws, message):
     data['label'] = label
 
 
+<<<<<<< HEAD
     if curTime - lastTime >= 4 : 
+=======
+    if curTime - lastTime >= 3 : 
+>>>>>>> 771818cf3fe7fb612b4f075dbf162f9de27b56ae
         #print(curTime)
         #print(lastTime)
 
