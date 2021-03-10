@@ -20,7 +20,7 @@ numCurFrame = 0
 
 Left = []
 Right = []
-label = 0
+label = 3
 newData = []
 #flag = 0
 
@@ -40,14 +40,14 @@ def on_message(ws, message):
     data['label'] = label
 
 
-    if curTime - lastTime >= 1 : 
+    if curTime - lastTime >= 4 : 
         #print(curTime)
         #print(lastTime)
 
         lastTime = curTime
         numCurFrame += 1
 
-        #print("[",numCurFrame , "]")
+        print("[",numCurFrame , "]")
 
         newData.append(data)
 
@@ -58,16 +58,14 @@ def on_message(ws, message):
             print('----------------------')
             print("Waiting...")
 
-            lastTime += 2
-
-            
+            lastTime += 10
 
             print("Start collecting...")
 
             finalData.append(newData)
             newData = []
 
-    if numData == 200:
+    if numData == 20:
         print(len(finalData))
         finalData.pop(0)
         with open('dataRaw.json', 'w') as outfile:
