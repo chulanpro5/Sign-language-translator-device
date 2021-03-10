@@ -1,6 +1,6 @@
 import json
 
-f = open('dataRaw.json',)  
+f = open('test.json',)  
 nData = json.load(f) 
 
 joint = ['dipPosition' , 'pipPosition' , 'mcpPosition']
@@ -82,7 +82,7 @@ for data in nData:
 
 print(len(finalData))
 
-with open('rawData.json', 'w') as outfile:
+with open('test.json', 'w') as outfile:
     json.dump(finalData, outfile)
 
 

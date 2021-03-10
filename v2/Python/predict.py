@@ -12,14 +12,9 @@ from keras.callbacks import ModelCheckpoint
 
 model = keras.models.load_model('model.h5')
 
-<<<<<<< HEAD
 f_test = open('rawData.json',)  
 test = json.load(f_test) 
-=======
-f_test = open('test.json',)  
-test = json.load(f_test) 
-test = test["data"]
->>>>>>> ea08a4288dd206cac81080c880aa06f41dc2d159
+
 c_test = []
 xraw_test = []
 x_test = []
@@ -27,11 +22,7 @@ y_test = []
 
 for i in test:
   xraw_test.append(i["ys"])
-<<<<<<< HEAD
   y_test.append(int(i["label"]))
-=======
-  y_test.append(int(i["xs"]))
->>>>>>> ea08a4288dd206cac81080c880aa06f41dc2d159
 
 for i in xraw_test:
   tmp = []
@@ -44,7 +35,6 @@ x_test = x_test.reshape(x_test.shape[0],x_test.shape[1]//96,96)
 
 print(len(x_test))
 
-<<<<<<< HEAD
 wrongTest = {}
 wrongTest[0] = 0
 wrongTest[1] = 0
@@ -64,8 +54,3 @@ for i in range(0 , len(x_test) , 1):
 print(wrongTest)
 print(label)
   
-=======
-for i in range(0 , len(x_test) , 1):
-  XX=np.reshape(x_test[i],(1,5,96))
-  print('predict',np.argmax(model.predict(XX)[0]))
->>>>>>> ea08a4288dd206cac81080c880aa06f41dc2d159

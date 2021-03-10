@@ -2,7 +2,7 @@ import json
 
 finalData = []
 
-label = ['Toi' , 'Ten' , 'XinChao' , 'Toi2' , 'Ten2' , 'XinChao2']
+label = ['MoiNguoitest' , 'Toitest' , 'XinChaotest']
 
 for curLabel in label:
     newLabel = curLabel + '.json'
@@ -13,5 +13,5 @@ for curLabel in label:
         if exists == True:
             finalData.append(curData)
         
-with open('dataRaw.json', 'w') as outfile:
+with open('test.json', 'w') as outfile:
     json.dump(finalData, outfile)
