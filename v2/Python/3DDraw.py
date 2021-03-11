@@ -7,11 +7,7 @@ import time
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
-<<<<<<< HEAD
 f = open('data3D.json',)
-=======
-f = open('data.json',)
->>>>>>> ea08a4288dd206cac81080c880aa06f41dc2d159
 data = json.load(f)
 
 Left = []

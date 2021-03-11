@@ -25,7 +25,7 @@ for i in xraw:
   tmp = []
   for id in i:
     tmp.append(id)
-  if len(tmp) != 480:
+  if len(tmp) != 930:
     print('Wrong Data :')
     print(len(tmp))
     print('-----------')
@@ -35,7 +35,7 @@ x = np.asarray(x)
 
 print(x.shape[0])
 y = np.asarray(y)
-x = x.reshape(x.shape[0],x.shape[1]//96,96)
+x = x.reshape(x.shape[0],x.shape[1]//93,93)
 
 model = Sequential()
 model.add(LSTM(

@@ -2,7 +2,7 @@ import json
 
 finalData = []
 
-label = ['MoiNguoitest' , 'Toitest' , 'XinChaotest']
+label = ['Toitest' , 'XinChaotest' , 'MoiNguoitest']
 
 for curLabel in label:
     newLabel = curLabel + '.json'

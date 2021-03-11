@@ -1,0 +1,44 @@
+<html>
+
+<body>
+    <script>
+        function Video(src, append) {
+            let v = document.createElement("video");
+            if (src != "") {
+                v.src = src;
+            }
+            if (append == true) {
+                document.body.appendChild(v);
+            }
+            return v;
+        }
+        let nameWord = ["test", "test_2"];
+        let playlist = [];
+        let type = ".mp4";
+        for (let i = 0; i < nameWord.length; i++) {
+            playlist.push(encodeURIComponent(nameWord[i]) + type);
+        }
+        console.log(playlist);
+        let video = Video(playlist[0], true);
+        let i = 0;
+        let o = 0;
+        video.addEventListener('ended', function() {
+            i++;
+            console.log(i);
+            if (i > playlist.length) o = 1;
+            if (o === 0) {
+                console.log(i);
+                video.src = playlist[i];
+                video.play();
+            }
+        }, true);
+        video.height = 280;
+        video.width = 500;
+        video.muted = true;
+        video.src = playlist[0];
+        console.log(video.src);
+        video.play();
+    </script>
+</body>
+
+</html>
