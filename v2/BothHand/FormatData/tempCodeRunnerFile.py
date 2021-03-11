@@ -1,2 +1,0 @@
-
-for data in Data:
