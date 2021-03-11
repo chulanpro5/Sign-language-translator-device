@@ -9,10 +9,11 @@ import json
 import sys
 
 lastTime = 0
+fileName = 'KhoeManh.json'
 
 print("Hello World")
 
-f = open('dataRaw.json',)  
+f = open(fileName,)  
 finalData = json.load(f,)
 print(len(finalData))
 numData = -1
@@ -20,7 +21,7 @@ numCurFrame = 0
 
 Left = []
 Right = []
-label = 3
+label = 4
 newData = []
 #flag = 0
 
@@ -40,11 +41,7 @@ def on_message(ws, message):
     data['label'] = label
 
 
-<<<<<<< HEAD
-    if curTime - lastTime >= 4 : 
-=======
     if curTime - lastTime >= 3 : 
->>>>>>> 771818cf3fe7fb612b4f075dbf162f9de27b56ae
         #print(curTime)
         #print(lastTime)
 
@@ -64,15 +61,15 @@ def on_message(ws, message):
 
             lastTime += 10
 
-            print("Start collecting...")
-
             finalData.append(newData)
             newData = []
 
-    if numData == 20:
+            print("Start collecting...")
+
+    if numData == 40:
         print(len(finalData))
         finalData.pop(0)
-        with open('dataRaw.json', 'w') as outfile:
+        with open(fileName, 'w') as outfile:
                 json.dump(finalData, outfile)
         sys.exit()
                 
