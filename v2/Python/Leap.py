@@ -66,7 +66,7 @@ def on_message(ws, message):
 
             print("Start collecting...")
 
-    if numData == 40:
+    if numData == 50:
         print(len(finalData))
         finalData.pop(0)
         with open(fileName, 'w') as outfile:
