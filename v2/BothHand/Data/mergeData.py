@@ -3,9 +3,9 @@ import os
 import sys
 
 finalData = []
-fileName = 'test'
+fileName = 'rawData'
 
-label = ['Ten(test)' , 'KhoeManh(test)']
+label = ['Ten' , 'Ten2' , 'KhoeManh']
 
 #XinChao: 0
 #Toi: 1
