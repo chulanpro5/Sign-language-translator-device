@@ -10,7 +10,7 @@ for i in range(0 , 3):
         coor = [coordinateX[i] , coordinateY[j] , coordinateX[i + 1] , coordinateY[j + 1]]
         coordinate.append(coor)
 
-f = open('rawData.json',)  
+f = open('test.json',)  
 nData = json.load(f) 
 
 joint = ['dipPosition' , 'pipPosition' , 'mcpPosition']
@@ -78,7 +78,7 @@ for data in nData:
 
 print(len(finalData))
 
-with open('finalData.json', 'w') as outfile:
+with open('finalTestData.json', 'w') as outfile:
     json.dump(finalData, outfile)
 
 
