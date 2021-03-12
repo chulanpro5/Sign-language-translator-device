@@ -48,7 +48,6 @@ for data in nData:
         rawData['label'] = curData['label']
 
         if len(curData['hands']) == 2:
-            palm = curData['hands'][0]['palmPosition']
             
             for finger in range(0 , 5 , 1):
                     for curJoint in joint:
@@ -57,7 +56,6 @@ for data in nData:
                             if id == 0: Left.append(curData['pointables'][finger][curJoint][id] - palmLeft[id] + corLeft[0])
                             if id == 2: Left.append(curData['pointables'][finger][curJoint][id] - palmLeft[id] + corLeft[1])
             
-            palm = curData['hands'][1]['palmPosition']
 
             for finger in range(5 , 10 , 1):
                     for curJoint in joint:
