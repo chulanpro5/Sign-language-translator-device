@@ -105,8 +105,3 @@ print(len(finalData))
 
 with open('finalData.json', 'w') as outfile:
     json.dump(finalData, outfile)
-
-
-            
-
-
