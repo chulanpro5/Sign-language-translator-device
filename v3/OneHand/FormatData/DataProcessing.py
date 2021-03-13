@@ -48,44 +48,58 @@ for data in nData:
         Right = []
         rawData['label'] = curData['label']
 
-        if len(curData['hands']) == 1:
-            if curData['hands'][0]['type'] == 'right':   
-                disTance = []         
-                cornerFinger = []
-                curPalm = curData['hands'][0]['palmPosition']
-                for finger in range(0 , 5 , 1):
+        if len(curData['hands']) == 1 and curData['hands'][0]['type'] == 'right':
+            curPalm = curData['hands'][0]['palmPosition']
+            disTance = []         
+            cornerFinger = []
+            
+            for finger in range(0 , 5 , 1):
 
-                    disTance.append(curData['pointables'][finger])
-                    j = []
-                    cornerFinger.append(curData['pointables'][finger]['tipPosition'])
-                    for curJoint in joint:
-                        j.append(curData['pointables'][finger][curJoint])
-                        #for id in range(len(curData['pointables'][finger][curJoint])):
-                        #    if id == 1: Right.append(curData['pointables'][finger][curJoint][id] - palm[id])
-                        #    if id == 0: Right.append(curData['pointables'][finger][curJoint][id] - palm[id] + cor[0])
-                        #    if id == 2: Right.append(curData['pointables'][finger][curJoint][id] - palm[id] + cor[1])
-                    
-                    j.append(curData['hands'][0]['palmPosition'])
-                    
-                    for id in range(1 , 4):
-                        A = createVector(j[id] , j[id - 1])
-                        B = createVector(j[id] , j[id + 1])
-                        Right.append(math.acos(calCorner(A , B)))
-                    
-                for id in range(0 , 4):
-                    A = createVector(curPalm , cornerFinger[id])
-                    B = createVector(curPalm , cornerFinger[id + 1])
-                    Right.append(math.acos(calCorner(A , B)))
-                    
-                for id in range(0 , 4):
-                    for curJoint in joint:
-                        Right.append(calDistance(disTance[id][curJoint] , disTance[id + 1][curJoint]))
+                disTance.append(curData['pointables'][finger])
+                j = []
+                cornerFinger.append(curData['pointables'][finger]['tipPosition'])
+                for curJoint in joint:
+                    j.append(curData['pointables'][finger][curJoint])
+                    #for id in range(len(curData['pointables'][finger][curJoint])):
+                    #    if id == 1: Right.append(curData['pointables'][finger][curJoint][id] - palm[id])
+                    #    if id == 0: Right.append(curData['pointables'][finger][curJoint][id] - palm[id] + cor[0])
+                    #    if id == 2: Right.append(curData['pointables'][finger][curJoint][id] - palm[id] + cor[1])
+                
+                j.append(curData['hands'][0]['palmPosition'])
+                
+                for id in range(1 , 4):
+                    A = createVector(j[id] , j[id - 1])
+                    B = createVector(j[id] , j[id + 1])
+                    Right.append(math.degrees(math.acos(calCorner(A , B))))
+                
+            for id in range(0 , 4):
+                A = createVector(curPalm , cornerFinger[id])
+                B = createVector(curPalm , cornerFinger[id + 1])
+                Right.append(math.degrees(math.acos(calCorner(A , B))))
+            
+            for finger in range(0 , 5 , 1):
+                for id in range(0 , 3):
+                    Right.append(curData['pointables'][finger]['direction'][id] * 100)
+
+            for id in range(0 , 3):
+                Right.append(curData['hands'][0]['palmNormal'][id] * 100)
+
+            #for id in range(0 , 4):
+            #    for curJoint in joint:
+            #        Right.append(calDistance(disTance[id][curJoint] , disTance[id + 1][curJoint]))
+        
+            for i in range(0 , 5):
+                Right.append(curPalm[0] - palm[0] + cor[0])
+                Right.append(curPalm[1] - palm[1])
+                Right.append(curPalm[2] - palm[2] + cor[2])
                     
         for tmp in Right:
             rawData['ys'].append(tmp)
 
+    print(len(rawData['ys']))
 
-    print(len(rawData['ys']))           
+    if len(rawData['ys']) == 260:
+        finalData.append(rawData)
 
 print(len(finalData))
 

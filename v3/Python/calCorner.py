@@ -1,11 +1,11 @@
 import math
 
-a = [2.0 , 8.3 , 9.3]
-b = [2.55 , 12.44 , 59.333]
-c = [7.33 , 199.33 , 7.99]
+a = [1.0 , 4.0 , 0.0]
+b = [1.0 , 1.0 , 0.0]
+c = [5.0 , 1.0 , 0.0]
 
 def createVector(A , B):
-    c = [B[0] - A[0] , B[1] - A[1] , B[2] - A[2]]
+    c = (B[0] - A[0] , B[1] - A[1] , B[2] - A[2])
     return c
 
 def calCorner(A , B):
@@ -14,6 +14,6 @@ def calCorner(A , B):
 A = createVector(a , b)
 B = createVector(b , c)
 
-print(math.acos(calCorner(A , B)))
+print(math.degrees(math.acos(calCorner(A , B))))
 
 
