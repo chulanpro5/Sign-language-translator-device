@@ -3,9 +3,9 @@ import os
 import sys
 
 finalData = []
-fileName = 'rawData'
+fileName = 'finalData'
 
-label = ['Toi', 'toi2' , 'MoiNguoi' , 'XinChao', 'xinchao2']
+label = ['MoiNguoi', 'XinChao', 'Toi']
 
 #XinChao: 0
 #Toi: 1
@@ -17,7 +17,7 @@ for curLabel in label:
     f = open(newLabel,)
     Data = json.load(f)
     for curData in Data:
-        exists = 'currentFrameRate' in curData[0]
+        exists = True
         if exists == True:
             finalData.append(curData)
         

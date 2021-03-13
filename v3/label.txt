@@ -1,0 +1,5 @@
+XinChao: 0
+Toi: 1
+Ten: 2
+MoiNguoi: 3
+KhoeManh: 4

@@ -5,7 +5,7 @@ import sys
 finalData = []
 fileName = 'rawData'
 
-label = ['Ten' , 'Ten2' , 'KhoeManh']
+label = ['Ten' , 'Ten2' , 'KhoeManh' , 'TacGia']
 
 #XinChao: 0
 #Toi: 1

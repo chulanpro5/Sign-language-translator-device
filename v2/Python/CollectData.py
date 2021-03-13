@@ -9,8 +9,8 @@ import json
 import sys
 
 lastTime = 0
-fileName = 'KhoeManh(test).json'
-label = 4
+fileName = 'TacGia.json'
+label = 5
 
 print("Hello World")
 
@@ -57,7 +57,7 @@ def on_message(ws, message):
             numCurFrame = 0
             numData += 1
             print(numData)
-            print('----------------------')
+            print('-----------------------------------------------')
             print("Waiting...")
 
             lastTime += 10
@@ -67,7 +67,7 @@ def on_message(ws, message):
 
             print("Start collecting...")
 
-    if numData == 50:
+    if numData == 100:
         print(len(finalData))
         finalData.pop(0)
         with open(fileName, 'w') as outfile:
