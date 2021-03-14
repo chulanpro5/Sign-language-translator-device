@@ -5,3 +5,4 @@ MoiNguoi: 3
 KhoeManh: 4
 TacGia: 5
 Meo: 6
+Thich: 7
