@@ -19,9 +19,11 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, LSTM, Activation
 from keras.utils import np_utils
 from keras.callbacks import ModelCheckpoint
+import math
+
 # ==========================================
 
-label = ['Xin Chào' , 'Tôi' , 'Tên' , 'Mọi Người' , 'Khỏe Mạnh']
+label = ['Xin Chào' , 'Tôi' , 'Tên' , 'Mọi Người' , 'Khỏe Mạnh' , 'Tác giả' , 'Mèo' , 'Thích']
 
 oneHandModel = keras.models.load_model('oneHandModel.h5')
 bothHandModel = keras.models.load_model('bothHandModel_2.h5')
@@ -39,7 +41,7 @@ for i in range(0 , 5):
         coordinate.append(coor)
 #=========================================================
 
-joint = ['dipPosition' , 'pipPosition' , 'mcpPosition'] # joint name
+joint = ['tipPosition' , 'dipPosition' , 'pipPosition' , 'mcpPosition'] # joint name
 
 index = [0 , 4 , 8 , 12 , 16] # index Frame
 
@@ -50,6 +52,18 @@ rawData = [] # Dữ liệu thô lấy từ LeapMotion
 arrData = [] # Dữ liệu sau khi xử lí
 
 #==========Xử lí dữ liệu thô (One hand)==================
+
+def createVector(A , B):
+    c = [B[0] - A[0] , B[1] - A[1] , B[2] - A[2]]
+    return c
+
+def calCorner(A , B):
+    return (A[0] * B[0] + A[1] * B[1] + A[2] * B[2]) / (math.sqrt(A[0] * A[0] + A[1] * A[1] + A[2] * A[2]) * math.sqrt(B[0] * B[0] + B[1] * B[1] + B[2] * B[2]))
+
+def calDistance(A , B):
+    return math.sqrt( (A[0] - B[0]) * (A[0] - B[0]) + (A[1] - B[1]) * (A[1] - B[1]) + (A[2] - B[2]))
+
+
 def processOneHand():
     global arrData
     arrData = []
@@ -60,22 +74,68 @@ def processOneHand():
     
     palm = arrData[0]['hands'][0]['palmPosition']
     
+    #==== Tim o de quy ve =======
+
     for coor in coordinate:
         if coor[0] <= palm[0] and palm[0] <= coor[2] and coor[1] <= palm[2] and palm[2] <= coor[3]:
             cor = coor
-
     
+    #============================
 
     for curData in arrData:
         Right = []
 
-        if len(curData['hands']) == 1:    
+        if len(curData['hands']) == 1 and curData['hands'][0]['type'] == 'right':    
+            curPalm = curData['hands'][0]['palmPosition'] # Lay Palm cua khung hinh hien tai
+            cornerFinger = [] # Tinh goc giua 2 ngon tay
+            
             for finger in range(0 , 5 , 1):
+                j = [] # Tinh goc giua cac khop tay trong 1 ngon tay
+                cornerFinger.append(curData['pointables'][finger]['tipPosition'])
                 for curJoint in joint:
-                    for id in range(len(curData['pointables'][finger][curJoint])):
-                        if id == 1: Right.append(curData['pointables'][finger][curJoint][id] - palm[id])
-                        if id == 0: Right.append(curData['pointables'][finger][curJoint][id] - palm[id] + cor[0])
-                        if id == 2: Right.append(curData['pointables'][finger][curJoint][id] - palm[id] + cor[1])
+                    j.append(curData['pointables'][finger][curJoint])
+                
+                j.append(curData['hands'][0]['palmPosition'])
+                
+                #Tinh goc giua cac khop tay
+                
+                for id in range(1 , 4):
+                    A = createVector(j[id] , j[id - 1])
+                    B = createVector(j[id] , j[id + 1])
+                    EE = calCorner(A , B)
+                    if EE > 1.0 : EE = 1.0
+                    if EE < -1.0: EE = -1.0
+                    Right.append(math.degrees(math.acos(EE)))
+                
+                #==========================
+
+            # Tinh goc giua 2 ngon tay
+
+            for id in range(0 , 4):
+                A = createVector(curPalm , cornerFinger[id])
+                B = createVector(curPalm , cornerFinger[id + 1])
+                EE = calCorner(A , B)
+                if EE > 1.0 : EE = 1.0
+                if EE < -1.0: EE = -1.0
+                Right.append(math.degrees(math.acos(EE)))
+
+            #=========================
+
+            #Lay vector chi huong cua tung ngon tay
+
+            for finger in range(0 , 5 , 1):
+                for id in range(0 , 3):
+                    Right.append(curData['pointables'][finger]['direction'][id] * 100)
+
+            #=========================
+
+            for id in range(0 , 3):
+                Right.append(curData['hands'][0]['palmNormal'][id] * 100)
+        
+            for i in range(0 , 5):
+                Right.append(curPalm[0] - palm[0] + cor[0])
+                Right.append(curPalm[1] - palm[1])
+                Right.append(curPalm[2] - palm[2] + cor[2])
     
         for tmp in Right:
             pre.append(tmp)
@@ -110,19 +170,93 @@ def processBothHand ():
         Right = []
 
         if len(curData['hands']) == 2:            
+            curPalmLeft = curData['hands'][0]['palmPosition']
+            curPalmRight = curData['hands'][1]['palmPosition']
+            cornerFinger = []
+
             for finger in range(0 , 5 , 1):
-                    for curJoint in joint:
-                        for id in range(len(curData['pointables'][finger][curJoint])):
-                            if id == 1: Left.append(curData['pointables'][finger][curJoint][id] - palmLeft[id])
-                            if id == 0: Left.append(curData['pointables'][finger][curJoint][id] - palmLeft[id] + corLeft[0])
-                            if id == 2: Left.append(curData['pointables'][finger][curJoint][id] - palmLeft[id] + corLeft[1])
+                j = []
+                cornerFinger.append(curData['pointables'][finger]['tipPosition'])
+                for curJoint in joint:
+                    j.append(curData['pointables'][finger][curJoint])
+                    #for id in range(len(curData['pointables'][finger][curJoint])):
+                    #    if id == 1: Left.append(curData['pointables'][finger][curJoint][id] - palm[id])
+                    #    if id == 0: Left.append(curData['pointables'][finger][curJoint][id] - palm[id] + cor[0])
+                    #    if id == 2: Left.append(curData['pointables'][finger][curJoint][id] - palm[id] + cor[1])
+                
+                j.append(curData['hands'][0]['palmPosition'])
+                
+                for id in range(1 , 4):
+                    A = createVector(j[id] , j[id - 1])
+                    B = createVector(j[id] , j[id + 1])
+                    EE = calCorner(A , B)
+                    if EE > 1.0 : EE = 1.0
+                    if EE < -1.0: EE = -1.0
+                    Left.append(math.degrees(math.acos(EE)))
+                
+            for id in range(0 , 4):
+                A = createVector(curPalmLeft , cornerFinger[id])
+                B = createVector(curPalmLeft , cornerFinger[id + 1])
+                EE = calCorner(A , B)
+                if EE > 1.0 : EE = 1.0
+                if EE < -1.0: EE = -1.0
+                Left.append(math.degrees(math.acos(EE)))
+            
+            for finger in range(0 , 5 , 1):
+                for id in range(0 , 3):
+                    Left.append(curData['pointables'][finger]['direction'][id] * 100)
+
+            for id in range(0 , 3):
+                Left.append(curData['hands'][0]['palmNormal'][id] * 100)
+            
+
+            for i in range(0 , 5):
+                Right.append(curPalmLeft[0] - palmLeft[0] + corLeft[0])
+                Right.append(curPalmLeft[1] - palmLeft[1])
+                Right.append(curPalmLeft[2] - palmLeft[2] + corLeft[2])
+
+            cornerFinger = []
+
+            for finger in range(5 , 10 , 1):
+                j = []
+                cornerFinger.append(curData['pointables'][finger]['tipPosition'])
+                for curJoint in joint:
+                    j.append(curData['pointables'][finger][curJoint])
+                    #for id in range(len(curData['pointables'][finger][curJoint])):
+                    #    if id == 1: Right.append(curData['pointables'][finger][curJoint][id] - palm[id])
+                    #    if id == 0: Right.append(curData['pointables'][finger][curJoint][id] - palm[id] + cor[0])
+                    #    if id == 2: Right.append(curData['pointables'][finger][curJoint][id] - palm[id] + cor[1])
+                
+                j.append(curData['hands'][0]['palmPosition'])
+                
+                for id in range(1 , 4):
+                    A = createVector(j[id] , j[id - 1])
+                    B = createVector(j[id] , j[id + 1])
+                    EE = calCorner(A , B)
+                    if EE > 1.0 : EE = 1.0
+                    if EE < -1.0: EE = -1.0
+                    Right.append(math.degrees(math.acos(EE)))
+                
+            for id in range(0 , 4):
+                A = createVector(curPalmRight , cornerFinger[id])
+                B = createVector(curPalmRight , cornerFinger[id + 1])
+                EE = calCorner(A , B)
+                if EE > 1.0 : EE = 1.0
+                if EE < -1.0: EE = -1.0
+                Right.append(math.degrees(math.acos(EE)))
             
             for finger in range(5 , 10 , 1):
-                    for curJoint in joint:
-                        for id in range(len(curData['pointables'][finger][curJoint])):
-                            if id == 1: Right.append(curData['pointables'][finger][curJoint][id] - palmRight[id])
-                            if id == 0: Right.append(curData['pointables'][finger][curJoint][id] - palmRight[id] + corRight[0])
-                            if id == 2: Right.append(curData['pointables'][finger][curJoint][id] - palmRight[id] + corRight[1])
+                for id in range(0 , 3):
+                    Right.append(curData['pointables'][finger]['direction'][id] * 100)
+
+            for id in range(0 , 3):
+                Right.append(curData['hands'][1]['palmNormal'][id] * 100)
+
+            for i in range(0 , 5):
+                Right.append(curPalmRight[0] - palmRight[0] + corRight[0])
+                Right.append(curPalmRight[1] - palmRight[1])
+                Right.append(curPalmRight[2] - palmRight[2] + corRight[2])
+
         for tmp in Left:
             pre.append(tmp)
         
@@ -142,14 +276,14 @@ def predictOneHand():
     test = []
     test.append(arrData)
     test = np.asarray(test)
-    test = test.reshape(test.shape[0] , test.shape[1]//45 , 45)
+    test = test.reshape(test.shape[0] , test.shape[1]//52 , 52)
 
-    X = np.reshape(test[0] , (1,5,45))
+    X = np.reshape(test[0] , (1,5,52))
     YRaw = oneHandModel.predict(X)  
     Y = np.argmax(YRaw[0])
     YScore = YRaw[0][Y]
 
-    if YScore >= 0.9999:
+    if YScore >= 0.8:
         print('Predict: ', label[np.argmax(oneHandModel.predict(X)[0])]) 
         print('Score: ' , YScore)
         print('=======================')

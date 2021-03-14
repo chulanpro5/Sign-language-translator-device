@@ -16,7 +16,7 @@ def createVector(A , B):
     return c
 
 def calCorner(A , B):
-    return (A[0] * B[0] + A[1] * B[1] + A[2] * B[2]) / (math.sqrt(A[0] * A[0] + A[1] * A[1] + A[2] * A[2]) * math.sqrt(B[0] * B[0] + B[1] * B[1] + B[2] * B[2]))
+    return (A[0] * B[0] + A[1] * B[1] + A[2] * B[2]) / ( math.sqrt(A[0] * A[0] + A[1] * A[1] + A[2] * A[2]) * math.sqrt(B[0] * B[0] + B[1] * B[1] + B[2] * B[2]) )
 
 def calDistance(A , B):
     return math.sqrt( (A[0] - B[0]) * (A[0] - B[0]) + (A[1] - B[1]) * (A[1] - B[1]) + (A[2] - B[2]) * (A[2] - B[2]))
@@ -74,12 +74,18 @@ for data in nData:
                 for id in range(1 , 4):
                     A = createVector(j[id] , j[id - 1])
                     B = createVector(j[id] , j[id + 1])
-                    Left.append(math.degrees(math.acos(calCorner(A , B))))
+                    EE = calCorner(A , B)
+                    if EE > 1.0 : EE = 1.0
+                    if EE < -1.0: EE = -1.0
+                    Left.append(math.degrees(math.acos(EE)))
                 
             for id in range(0 , 4):
                 A = createVector(curPalmLeft , cornerFinger[id])
                 B = createVector(curPalmLeft , cornerFinger[id + 1])
-                Left.append(math.degrees(math.acos(calCorner(A , B))))
+                EE = calCorner(A , B)
+                if EE > 1.0 : EE = 1.0
+                if EE < -1.0: EE = -1.0
+                Left.append(math.degrees(math.acos(EE)))
             
             for finger in range(0 , 5 , 1):
                 for id in range(0 , 3):
@@ -111,12 +117,18 @@ for data in nData:
                 for id in range(1 , 4):
                     A = createVector(j[id] , j[id - 1])
                     B = createVector(j[id] , j[id + 1])
-                    Right.append(math.degrees(math.acos(calCorner(A , B))))
+                    EE = calCorner(A , B)
+                    if EE > 1.0 : EE = 1.0
+                    if EE < -1.0: EE = -1.0
+                    Right.append(math.degrees(math.acos(EE)))
                 
             for id in range(0 , 4):
                 A = createVector(curPalmRight , cornerFinger[id])
                 B = createVector(curPalmRight , cornerFinger[id + 1])
-                Right.append(math.degrees(math.acos(calCorner(A , B))))
+                EE = calCorner(A , B)
+                if EE > 1.0 : EE = 1.0
+                if EE < -1.0: EE = -1.0
+                Right.append(math.degrees(math.acos(EE)))
             
             for finger in range(5 , 10 , 1):
                 for id in range(0 , 3):
