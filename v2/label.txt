@@ -1,8 +1,8 @@
 XinChao: 0
 Toi: 1
-Ten: 2
+*****Ten: 2
 MoiNguoi: 3
-KhoeManh: 4
-TacGia: 5
-Meo: 6
+****KhoeManh: 4
+*****TacGia: 5
+****Meo: 6
 Thich: 7

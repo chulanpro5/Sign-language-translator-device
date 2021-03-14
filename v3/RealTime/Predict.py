@@ -26,7 +26,7 @@ import math
 label = ['Xin Chào' , 'Tôi' , 'Tên' , 'Mọi Người' , 'Khỏe Mạnh' , 'Tác giả' , 'Mèo' , 'Thích']
 
 oneHandModel = keras.models.load_model('oneHandModel.h5')
-bothHandModel = keras.models.load_model('bothHandModel_2.h5')
+bothHandModel = keras.models.load_model('bothHandModel.h5')
 #load model
 
 #==================Chia o===================
@@ -285,7 +285,7 @@ def predictOneHand():
 
     if YScore >= 0.8:
         print('Predict: ', label[np.argmax(oneHandModel.predict(X)[0])]) 
-        print('Score: ' , YScore)
+        #print('Score: ' , YScore)
         print('=======================')
         rawData = []
         arrData = []
@@ -305,16 +305,16 @@ def predictBothHand():
     test = []
     test.append(arrData)
     test = np.asarray(test)
-    test = test.reshape(test.shape[0] , test.shape[1]//90 , 90)
+    test = test.reshape(test.shape[0] , test.shape[1]//104 , 104)
 
-    X = np.reshape(test[0] , (1,5,90))
+    X = np.reshape(test[0] , (1,5,104))
     YRaw = bothHandModel.predict(X)  
     Y = np.argmax(YRaw[0])
     YScore = YRaw[0][Y]
 
     if YScore >= 0.9999:
         print('Predict: ', label[np.argmax(bothHandModel.predict(X)[0])]) 
-        print('Score: ' , YScore)
+        #print('Score: ' , YScore)
         print('=======================')
         rawData = []
         arrData = []
