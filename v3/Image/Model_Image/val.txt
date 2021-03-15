@@ -1,0 +1,5 @@
+oneHand_2(val) = 1.000
+oneHand_2(loss) = 5.5872e-05
+
+bothHand_3(val) = 0.9925
+bothHand_3(loss)= 0.0752

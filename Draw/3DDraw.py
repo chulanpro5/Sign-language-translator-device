@@ -18,7 +18,7 @@ ax.set_zlabel("z axis")
 
 Finger = ["tipPosition" , "pipPosition", "dipPosition", "mcpPosition"]
 
-ax.scatter(xs = data[0]["hands"][0]["palmPosition"][0] , ys = data[0]["hands"][0]["palmPosition"][1] , zs = data[0]["hands"][0]["palmPosition"][2], s = 100)
+
 
 for i in range(0 , 5 , 1):
     x = []
@@ -46,8 +46,8 @@ for i in range(0 , 5 , 1):
 
     z.append(data[0]["hands"][0]["palmPosition"][2])
 
-    ax.scatter(xs = x , ys = y , zs = z , s = 150)
-    ax.plot3D(xs = x , ys = y , zs = z)
+    ax.scatter(xs = x , ys = y , zs = z , s = 150 , color = 'green')
+    ax.plot3D(xs = x , ys = y , zs = z , color = 'black')
 
 plt.show()
 
