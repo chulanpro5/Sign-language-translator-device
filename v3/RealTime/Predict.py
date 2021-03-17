@@ -20,7 +20,7 @@ from keras.layers import Dense, Dropout, LSTM, Activation
 from keras.utils import np_utils
 from keras.callbacks import ModelCheckpoint
 import math
-
+import pyttsx3
 # ==========================================
 
 label = ['Xin Chào' , 'Tôi' , 'Tên' , 'Mọi Người' , 'Khỏe Mạnh' , 'Tác giả' , 'Mèo' , 'Thích']
@@ -52,6 +52,15 @@ rawData = [] # Dữ liệu thô lấy từ LeapMotion
 arrData = [] # Dữ liệu sau khi xử lí
 
 #==========Xử lí dữ liệu thô (One hand)==================
+
+def TextToSpeech(saying):
+    engine = pyttsx3.init()
+
+    voices = engine.getProperty("voices")
+
+    engine.setProperty("voice" , voices[1].id)
+    engine.say(saying)
+    engine.runAndWait()
 
 def createVector(A , B):
     c = [B[0] - A[0] , B[1] - A[1] , B[2] - A[2]]
@@ -285,6 +294,7 @@ def predictOneHand():
 
     if YScore >= 0.8:
         print('Predict: ', label[np.argmax(oneHandModel.predict(X)[0])]) 
+        TextToSpeech(label[np.argmax(oneHandModel.predict(X)[0])])
         #print('Score: ' , YScore)
         print('=======================')
         rawData = []
@@ -314,6 +324,7 @@ def predictBothHand():
 
     if YScore >= 0.9999:
         print('Predict: ', label[np.argmax(bothHandModel.predict(X)[0])]) 
+        TextToSpeech(label[np.argmax(bothHandModel.predict(X)[0])])
         #print('Score: ' , YScore)
         print('=======================')
         rawData = []

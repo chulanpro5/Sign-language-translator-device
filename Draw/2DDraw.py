@@ -3,12 +3,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 import math
-f = open('Data2D.json',)
+f = open('smooth.json',)
 Data = json.load(f)
 
 
 clor = ['blue' , 'green' , 'red']
-plt.title("Chuyển động sau khi xử lí")
+plt.title("Before Smooth")
 plt.xlabel("x axis")
 plt.ylabel("z axis")
 

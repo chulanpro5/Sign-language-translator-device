@@ -9,7 +9,7 @@ import json
 import sys
 
 lastTime = 0
-fileName = 'TacGia.json'
+fileName = 'U.json'
 label = 5
 
 print("Hello World")
@@ -42,7 +42,7 @@ def on_message(ws, message):
     data['label'] = label
 
 
-    if curTime - lastTime >= 3 : 
+    if curTime - lastTime >= 1 : 
         #print(curTime)
         #print(lastTime)
 
@@ -60,14 +60,14 @@ def on_message(ws, message):
             print('-----------------------------------------------')
             print("Waiting...")
 
-            lastTime += 10
+            lastTime += 2
 
             finalData.append(newData)
             newData = []
 
             print("Start collecting...")
 
-    if numData == 100:
+    if numData == 250:
         print(len(finalData))
         finalData.pop(0)
         with open(fileName, 'w') as outfile:

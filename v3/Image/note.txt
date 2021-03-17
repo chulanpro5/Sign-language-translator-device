@@ -1,0 +1,2 @@
+bothHand Accuracy: 0.9565217391304348
+oneHand Accuracy: 1.0

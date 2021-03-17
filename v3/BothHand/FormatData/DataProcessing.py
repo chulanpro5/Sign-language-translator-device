@@ -21,7 +21,7 @@ def calCorner(A , B):
 def calDistance(A , B):
     return math.sqrt( (A[0] - B[0]) * (A[0] - B[0]) + (A[1] - B[1]) * (A[1] - B[1]) + (A[2] - B[2]) * (A[2] - B[2]))
 
-f = open('rawData.json',)  
+f = open('rawTest.json',)  
 nData = json.load(f) 
 
 joint = ['tipPosition' , 'dipPosition' , 'pipPosition' , 'mcpPosition']
@@ -169,5 +169,5 @@ for data in nData:
 
 print(len(finalData))
 
-with open('finalData.json', 'w') as outfile:
+with open('finalTestData.json', 'w') as outfile:
     json.dump(finalData, outfile)

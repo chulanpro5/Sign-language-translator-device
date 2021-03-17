@@ -6,3 +6,9 @@ KhoeManh: 4
 TacGia: 5
 Meo: 6
 Thich: 7
+H:8
+E:9
+U:10
+chó : 11
+buồn : 12
+vui : 13
