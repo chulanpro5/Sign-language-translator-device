@@ -21,6 +21,9 @@ from keras.utils import np_utils
 from keras.callbacks import ModelCheckpoint
 import math
 import pyttsx3
+import turtle
+from turtle import Screen
+import speech_recognition as sr
 # ==========================================
 
 label = ['Xin Chào' , 'Tôi' , 'Tên' , 'Mọi Người' , 'Khỏe Mạnh' , 'Tác giả' , 'Mèo' , 'Thích']
@@ -28,6 +31,24 @@ label = ['Xin Chào' , 'Tôi' , 'Tên' , 'Mọi Người' , 'Khỏe Mạnh' , 'T
 oneHandModel = keras.models.load_model('oneHandModel.h5')
 bothHandModel = keras.models.load_model('bothHandModel.h5')
 #load model
+
+#======================================
+saying = []
+typeSaying = []
+curSaying = ""
+turt = turtle.Turtle()
+WIDTH, HEIGHT = 1000 , 1000
+
+screen = Screen()
+screen.bgcolor('black')
+screen.setup(WIDTH + 4, HEIGHT + 8)
+screen.setworldcoordinates(0, 0, WIDTH, HEIGHT)
+
+r = sr.Recognizer()
+
+curSaying = ""
+#======================================
+
 
 #==================Chia o===================
 coordinate = []
@@ -52,6 +73,23 @@ rawData = [] # Dữ liệu thô lấy từ LeapMotion
 arrData = [] # Dữ liệu sau khi xử lí
 
 #==========Xử lí dữ liệu thô (One hand)==================
+
+#================================
+def SpeechToText():
+    global curSaying
+    global saying
+    global typesaying
+    with sr.Microphone() as source:
+        audio = r.listen(source)
+        try:
+            curSaying = r.recognize_google(audio , language='vi-VN')
+            print(curSaying)
+        except:
+            print("sorry")
+    
+    saying.append(curSaying)
+    typeSaying.append(1)
+#================================
 
 def TextToSpeech(saying):
     engine = pyttsx3.init()
@@ -281,7 +319,7 @@ def predictOneHand():
     global rawData
     global arrData
     global lastTime
-
+    global curSaying
     test = []
     test.append(arrData)
     test = np.asarray(test)
@@ -300,7 +338,8 @@ def predictOneHand():
         rawData = []
         arrData = []
         lastTime += 20
-
+        curSaying.append(label[np.argmax(oneHandModel.predict(X)[0])])
+        typeSaying.append(2)
     else: 
         rawData.pop(1)
         print(len(rawData))
@@ -311,7 +350,7 @@ def predictBothHand():
     global rawData
     global arrData
     global lastTime
-
+    global curSaying
     test = []
     test.append(arrData)
     test = np.asarray(test)
@@ -330,7 +369,8 @@ def predictBothHand():
         rawData = []
         arrData = []
         lastTime += 20
-
+        curSaying.append(label[np.argmax(oneHandModel.predict(X)[0])])
+        typeSaying.append(2)
     else: 
         rawData.pop(1)
         print(len(rawData))
@@ -391,8 +431,37 @@ def on_error(ws, error):
 def on_close(ws):
     print("### closed ###")
 
+
+def Interface():
+    global saying
+
+    turt.hideturtle()
+    turt.penup()
+    turt.backward(0)
+
+    if len(saying) == 0:
+        saying.append(curSaying)
+
+    if curSaying != saying[len(saying) - 1]:
+        saying.append(curSaying)
+
+    height = HEIGHT - 50
+    for i in range(0 , len(saying)):
+        message = saying[i]
+        turt.setposition(WIDTH - (len(message) * 25), height)
+        height -= 60
+        turt.write(message, move=False, font=('monaco', 30, 'bold'), align='left')
+        turt.color('white')
+
+    time.sleep(1)
+    if len(saying) > 5:
+        turt.clear()
+        saying = []
+
 if __name__ == "__main__":
     websocket.enableTrace(True)
+    SpeechToText()
+    Interface()
     ws = websocket.WebSocketApp("ws://localhost:6437/v7.json",
                             on_message = on_message,
                             on_error = on_error,
