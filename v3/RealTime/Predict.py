@@ -5,6 +5,7 @@ try:
     import thread
 except ImportError:
     import _thread as thread
+
 import time
 import json 
 import sys
@@ -21,9 +22,12 @@ from keras.utils import np_utils
 from keras.callbacks import ModelCheckpoint
 import math
 import pyttsx3
-import turtle
-from turtle import Screen
+from tkinter import *
+import tkinter
+import threading
+import time
 import speech_recognition as sr
+
 # ==========================================
 
 label = ['Xin Chào' , 'Tôi' , 'Tên' , 'Mọi Người' , 'Khỏe Mạnh' , 'Tác giả' , 'Mèo' , 'Thích']
@@ -31,23 +35,6 @@ label = ['Xin Chào' , 'Tôi' , 'Tên' , 'Mọi Người' , 'Khỏe Mạnh' , 'T
 oneHandModel = keras.models.load_model('oneHandModel.h5')
 bothHandModel = keras.models.load_model('bothHandModel.h5')
 #load model
-
-#======================================
-saying = []
-typeSaying = []
-curSaying = ""
-turt = turtle.Turtle()
-WIDTH, HEIGHT = 1000 , 1000
-
-screen = Screen()
-screen.bgcolor('black')
-screen.setup(WIDTH + 4, HEIGHT + 8)
-screen.setworldcoordinates(0, 0, WIDTH, HEIGHT)
-
-r = sr.Recognizer()
-
-curSaying = ""
-#======================================
 
 
 #==================Chia o===================
@@ -75,20 +62,7 @@ arrData = [] # Dữ liệu sau khi xử lí
 #==========Xử lí dữ liệu thô (One hand)==================
 
 #================================
-def SpeechToText():
-    global curSaying
-    global saying
-    global typesaying
-    with sr.Microphone() as source:
-        audio = r.listen(source)
-        try:
-            curSaying = r.recognize_google(audio , language='vi-VN')
-            print(curSaying)
-        except:
-            print("sorry")
-    
-    saying.append(curSaying)
-    typeSaying.append(1)
+
 #================================
 
 def TextToSpeech(saying):
@@ -331,15 +305,15 @@ def predictOneHand():
     YScore = YRaw[0][Y]
 
     if YScore >= 0.8:
-        print('Predict: ', label[np.argmax(oneHandModel.predict(X)[0])]) 
-        TextToSpeech(label[np.argmax(oneHandModel.predict(X)[0])])
+        curSaying = label[np.argmax(oneHandModel.predict(X)[0])]
+        print('Predict: ', curSaying) 
+        TextToSpeech(curSaying)
+        addText('Tôi: ' + curSaying)
         #print('Score: ' , YScore)
         print('=======================')
         rawData = []
         arrData = []
         lastTime += 20
-        curSaying.append(label[np.argmax(oneHandModel.predict(X)[0])])
-        typeSaying.append(2)
     else: 
         rawData.pop(1)
         print(len(rawData))
@@ -353,6 +327,9 @@ def predictBothHand():
     global curSaying
     test = []
     test.append(arrData)
+    if len(arrData) != 520:
+        rawData.pop(1)
+        return
     test = np.asarray(test)
     test = test.reshape(test.shape[0] , test.shape[1]//104 , 104)
 
@@ -362,15 +339,15 @@ def predictBothHand():
     YScore = YRaw[0][Y]
 
     if YScore >= 0.9999:
-        print('Predict: ', label[np.argmax(bothHandModel.predict(X)[0])]) 
-        TextToSpeech(label[np.argmax(bothHandModel.predict(X)[0])])
+        curSaying = label[np.argmax(bothHandModel.predict(X)[0])]
+        print('Predict: ', curSaying) 
+        TextToSpeech(curSaying)
+        addText('Tôi: ' + curSaying)
         #print('Score: ' , YScore)
         print('=======================')
         rawData = []
         arrData = []
         lastTime += 20
-        curSaying.append(label[np.argmax(oneHandModel.predict(X)[0])])
-        typeSaying.append(2)
     else: 
         rawData.pop(1)
         print(len(rawData))
@@ -416,8 +393,10 @@ def on_message(ws, message):
             else:
                 print(len(rawData))
                 if curNumHands == 1:
-                    arrData = processOneHand()
-                    predictOneHand()
+                    if rawData[0]['hands'][0]['type'] == 'right':
+                        arrData = processOneHand()
+                        predictOneHand()
+                    else : rawData.pop(1)
                 elif curNumHands == 2:
                     arrData = processBothHand()
                     predictBothHand()
@@ -432,39 +411,77 @@ def on_close(ws):
     print("### closed ###")
 
 
-def Interface():
-    global saying
 
-    turt.hideturtle()
-    turt.penup()
-    turt.backward(0)
-
-    if len(saying) == 0:
-        saying.append(curSaying)
-
-    if curSaying != saying[len(saying) - 1]:
-        saying.append(curSaying)
-
-    height = HEIGHT - 50
-    for i in range(0 , len(saying)):
-        message = saying[i]
-        turt.setposition(WIDTH - (len(message) * 25), height)
-        height -= 60
-        turt.write(message, move=False, font=('monaco', 30, 'bold'), align='left')
-        turt.color('white')
-
-    time.sleep(1)
-    if len(saying) > 5:
-        turt.clear()
-        saying = []
-
-if __name__ == "__main__":
+def webSocket():
     websocket.enableTrace(True)
-    SpeechToText()
-    Interface()
     ws = websocket.WebSocketApp("ws://localhost:6437/v7.json",
                             on_message = on_message,
                             on_error = on_error,
                             on_close = on_close)
     
     ws.run_forever()
+
+lbl = [[], [] , [] , [] , []]
+curLbl = []
+
+def UI():
+    global lbl
+    global curLbl
+    global printText
+    window = Tk()
+    window.title("alo alo")
+    window.geometry("800x600")
+    window.configure(bg = 'black')
+    X = 550
+    Y = 0
+    for i in range(5):
+        curLbl.append("")
+        lbl[i] = Label(window, text= "", fg = "white", font=("Arial", 30) , bg = 'black')
+        #lbl[i].grid(column = 0, row = i)
+        Y = Y + 100
+        lbl[i].place(x = 0 , y = Y)
+    curLbl.append('test')
+
+    window.mainloop()
+
+def addText(newText):
+    global lbl
+    global curLbl
+
+    lbl[4].configure(text = newText)
+    for i in range(0 , 4):
+        lbl[i].configure(text = curLbl[i + 1])
+        curLbl[i] = curLbl[i + 1]
+    curLbl[4] = newText
+
+def get_audio():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        audio = r.listen(source, phrase_time_limit=5)
+        try:
+            text = r.recognize_google(audio, language="vi-VN")
+            print(text)
+            return text
+        except:
+            return 0
+
+def speech_to_text():
+    while True:
+        text = get_audio()
+        if text:
+            addText(text)
+            #return 0
+        else:
+            print("...")
+
+threading.Thread(
+    target=webSocket
+).start()
+
+threading.Thread(
+    target=speech_to_text
+).start()
+
+threading.Thread(
+    target= UI
+).start()
