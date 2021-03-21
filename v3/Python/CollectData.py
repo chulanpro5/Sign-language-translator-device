@@ -11,7 +11,7 @@ import pygame
 import pyaudio
 
 lastTime = 0
-fileName = 'Buon.json'
+fileName = 'I(test).json'
 label = 12
 
 print("Hello World")
@@ -45,7 +45,7 @@ def on_message(ws, message):
     data['label'] = label
 
 
-    if curTime - lastTime >= 4 : 
+    if curTime - lastTime >= 1 : 
         #print(curTime)
         #print(lastTime)
 
@@ -71,8 +71,8 @@ def on_message(ws, message):
             print("Start collecting...")
 
     if numData == 100:
-        pygame.mixer.music.load("ring.mp3")
-        pygame.mixer.music.play()
+        #pygame.mixer.music.load("ring.mp3")
+        #pygame.mixer.music.play()
         print(len(finalData))
         finalData.pop(0)
         with open(fileName, 'w') as outfile:
