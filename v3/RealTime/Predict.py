@@ -438,8 +438,8 @@ def UI():
         curLbl.append("")
         lbl[i] = Label(window, text= "", fg = "white", font=("Arial", 30) , bg = 'black')
         #lbl[i].grid(column = 0, row = i)
-        Y = Y + 100
-        lbl[i].place(x = 0 , y = Y)
+        Y = Y + 70
+        lbl[i].place(x = 0 * 0 , y = Y)
     curLbl.append('test')
 
     window.mainloop()

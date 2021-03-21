@@ -7,10 +7,12 @@ except ImportError:
 import time
 import json 
 import sys
+import pygame
+import pyaudio
 
 lastTime = 0
-fileName = 'test.json'
-label = 5
+fileName = 'Buon.json'
+label = 12
 
 print("Hello World")
 
@@ -25,6 +27,7 @@ Left = []
 Right = []
 newData = []
 #flag = 0
+pygame.mixer.init()
 
 def on_message(ws, message):
     global lastTime
@@ -42,7 +45,7 @@ def on_message(ws, message):
     data['label'] = label
 
 
-    if curTime - lastTime >= 1 : 
+    if curTime - lastTime >= 4 : 
         #print(curTime)
         #print(lastTime)
 
@@ -67,11 +70,14 @@ def on_message(ws, message):
 
             print("Start collecting...")
 
-    if numData == 2:
+    if numData == 100:
+        pygame.mixer.music.load("ring.mp3")
+        pygame.mixer.music.play()
         print(len(finalData))
         finalData.pop(0)
         with open(fileName, 'w') as outfile:
                 json.dump(finalData, outfile)
+        
         sys.exit()
                 
         

@@ -4,8 +4,8 @@ import threading
 import time
 import speech_recognition as sr
 
-lbl = [[], [] , [] , [] , []]
-curType = [1 , 2 , 2 , 1 , 1]
+lbl = [[] , [] , [] , [] , []]
+text = ['Tôi : Xin chào', 'Tôi : Mọi người' , 'Chào bạn' , 'Rất vui được gặp bạn' , '...']
 curLbl = []
 
 def UI():
@@ -15,19 +15,16 @@ def UI():
 
     window = Tk()
     window.title("alo alo")
-    window.geometry("800x600")
+    window.geometry("1920x1080")
     window.configure(bg = 'black')
     X = 550
     Y = 0
     for i in range(5):
         curLbl.append("")
-        lbl[i] = Label(window, text= "", fg = "white", font=("Arial", 30) , bg = 'black')
+        lbl[i] = Label(window, text= text[i], fg = "white", font=("Arial", 60) , bg = 'black')
         #lbl[i].grid(column = 0, row = i)
-        Y = Y + 100
-        if curType[i] == 1:
-            lbl[i].place(x = 0 , y = Y)
-        else:
-            lbl[i].place(x = 400 , y = Y)
+        Y = Y + 150
+        lbl[i].place(x = 500 , y = Y)
     
     curLbl.append('test')
 
@@ -36,7 +33,7 @@ def UI():
 def addText(newText):
     global lbl
     global curLbl
-
+    
     lbl[4].configure(text = newText)
     for i in range(0 , 4):
         lbl[i].configure(text = curLbl[i + 1])
@@ -66,7 +63,8 @@ def speech_to_text():
 threading.Thread(
     target=UI
 ).start()
-
+"""
 threading.Thread(
     target=speech_to_text
 ).start()
+"""
