@@ -7,12 +7,12 @@ except ImportError:
 import time
 import json 
 import sys
-import pygame
-import pyaudio
+#import pygame
+#import pyaudio
 
 lastTime = 0
-fileName = 'I(test).json'
-label = 12
+fileName = 'Y(test).json'
+label = 16
 
 print("Hello World")
 
@@ -27,7 +27,7 @@ Left = []
 Right = []
 newData = []
 #flag = 0
-pygame.mixer.init()
+#pygame.mixer.init()
 
 def on_message(ws, message):
     global lastTime
