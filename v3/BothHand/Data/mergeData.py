@@ -5,7 +5,7 @@ import sys
 finalData = []
 fileName = 'rawTest'
 
-label = ['KhoeManh(test)' , 'TacGia(test)' , 'Meo(test)' , 'Ten(test)']
+label = ['Ten(test)' , 'cho(test)' , 'Meo(test)' , 'KhoeManh(test)' , 'Vui(test)' , 'TacGia(test)']
 
 #XinChao: 0
 #Toi: 1
@@ -20,7 +20,7 @@ for curLabel in label:
     print(len(Data))
     for curData in Data:
         exists = 'currentFrameRate' in curData[0]
-        if exists == True and numTest < 100:
+        if exists == True:
             finalData.append(curData)
             numTest += 1
         

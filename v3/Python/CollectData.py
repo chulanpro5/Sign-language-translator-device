@@ -11,8 +11,8 @@ import sys
 #import pyaudio
 
 lastTime = 0
-fileName = 'Y(test).json'
-label = 16
+fileName = 'H(test).json'
+label = 8
 
 print("Hello World")
 
