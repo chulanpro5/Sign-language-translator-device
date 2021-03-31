@@ -1,4 +1,3 @@
-from numpy.core.defchararray import array
 import websocket
 import os
 try:
@@ -30,10 +29,10 @@ import speech_recognition as sr
 
 # ==========================================
 
-label = ['Xin Chào' , 'Tôi' , 'Tên' , 'Mọi Người' , 'Khỏe Mạnh' , 'Tác giả' , 'Mèo' , 'Thích']
+label = ['Xin Chào' , 'Tôi' , 'Tên' , 'Mọi Người' , 'Khỏe Mạnh' , 'Tác giả' , 'Mèo' , 'Thích' , 'H', 'E' , 'U' , 'chó' , 'buồn' , 'vui' , 'D' , 'I' , 'Y']
 
-oneHandModel = keras.models.load_model('oneHandModel.h5')
-bothHandModel = keras.models.load_model('bothHandModel.h5')
+oneHandModel = keras.models.load_model('oneHandModel(final).h5')
+bothHandModel = keras.models.load_model('bothHandModel(final).h5')
 #load model
 
 
@@ -304,7 +303,7 @@ def predictOneHand():
     Y = np.argmax(YRaw[0])
     YScore = YRaw[0][Y]
 
-    if YScore >= 0.8:
+    if YScore >= 0.99:
         curSaying = label[np.argmax(oneHandModel.predict(X)[0])]
         print('Predict: ', curSaying) 
         TextToSpeech(curSaying)
@@ -338,7 +337,7 @@ def predictBothHand():
     Y = np.argmax(YRaw[0])
     YScore = YRaw[0][Y]
 
-    if YScore >= 0.9999:
+    if YScore >= 0.99:
         curSaying = label[np.argmax(bothHandModel.predict(X)[0])]
         print('Predict: ', curSaying) 
         TextToSpeech(curSaying)
@@ -430,16 +429,16 @@ def UI():
     global printText
     window = Tk()
     window.title("alo alo")
-    window.geometry("800x600")
+    window.geometry("1920x1080")
     window.configure(bg = 'black')
     X = 550
     Y = 0
     for i in range(5):
         curLbl.append("")
-        lbl[i] = Label(window, text= "", fg = "white", font=("Arial", 30) , bg = 'black')
+        lbl[i] = Label(window, text= "", fg = "white", font=("Arial", 50) , bg = 'black')
         #lbl[i].grid(column = 0, row = i)
         Y = Y + 70
-        lbl[i].place(x = 0 * 0 , y = Y)
+        lbl[i].place(x = 500 , y = Y)
     curLbl.append('test')
 
     window.mainloop()
