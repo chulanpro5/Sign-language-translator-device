@@ -12,7 +12,7 @@ import numpy as np
 import keras
 import time
 from keras.layers.embeddings import Embedding
-from keras.utils import to_categorical
+from tensorflow.keras.utils import to_categorical
 from keras.layers import Bidirectional, Lambda
 from keras.models import Model, Input
 from keras.models import Sequential
